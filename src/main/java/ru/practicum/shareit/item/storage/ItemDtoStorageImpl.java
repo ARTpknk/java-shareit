@@ -83,7 +83,7 @@ public class ItemDtoStorageImpl implements ItemDtoStorage {
 
     @Override
     public List<ItemDto> searchItems(String text) {
-        if (text == null) {
+        if (text == null || text.isEmpty() || text.isBlank()) {
             return new ArrayList<>();
         }
         List<ItemDto> searched = new ArrayList<>();
