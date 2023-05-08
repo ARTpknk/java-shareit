@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user;
+package ru.practicum.shareit.user.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public UserDto update(@PathVariable("id") Integer id, @RequestBody UserDto user ) {
+    public UserDto update(@PathVariable("id") Integer id, @RequestBody UserDto user) {
         log.info(String.format("UserController: update User request. Data: %s", user));
         return userService.update(user.withId(id));
     }
@@ -36,12 +36,12 @@ public class UserController {
 
     @GetMapping("/{id}")
     public UserDto findUserBy(@PathVariable("id") Integer id) {
-        return userService.getUserBy(id);
+        return userService.getUserById(id);
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUserBy(@PathVariable("userId") Integer userId) {
-        userService.deleteUserBy(userId);
-        log.info(String.format("FilmController: Remove user with id: %d.", userId));
+    public void deleteUserById(@PathVariable("userId") Integer userId) {
+        userService.deleteUserById(userId);
+        log.info(String.format("UserController: Remove user with id: %d.", userId));
     }
 }

@@ -3,15 +3,14 @@ package ru.practicum.shareit.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.dto.UserDtoStorage;
-import ru.practicum.shareit.user.service.UserService;
+import ru.practicum.shareit.user.storage.UserDtoStorageImpl;
 
-import java.util.*;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserDtoStorage storage;
+    private final UserDtoStorageImpl storage;
 
     @Override
     public UserDto create(UserDto user) {
@@ -24,8 +23,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserBy(Integer id) {
-        return storage.getUserBy(id);
+    public UserDto getUserById(Integer id) {
+        return storage.getUserById(id);
     }
 
     @Override
@@ -34,7 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUserBy(Integer id) {
-        storage.deleteUserBy(id);
+    public void deleteUserById(Integer id) {
+        storage.deleteUserById(id);
     }
 }

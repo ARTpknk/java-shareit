@@ -1,24 +1,26 @@
 package ru.practicum.shareit.item.model;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Value;
+import lombok.With;
 import ru.practicum.shareit.request.ItemRequest;
-import ru.practicum.shareit.user.User;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Value
+@Builder
 public class Item {
+    @With
     int id;
-    @NonNull
+    @NotNull
     @NotBlank
     String name;
-    @NonNull
+    @NotNull
     @NotBlank
     String description;
-    @NonNull
+    @NotNull
     Boolean available; //NonNull не работает с примитивами
-    User owner;
+    int owner;
     ItemRequest request;
 }
