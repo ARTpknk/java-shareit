@@ -12,6 +12,5 @@ public class User { //для Базы Данных
     @With
     int id;
     String name;
-    @Email
     String email;
 }

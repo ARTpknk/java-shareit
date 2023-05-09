@@ -30,7 +30,7 @@ public class ItemDtoStorageImpl implements ItemStorage {
         newItem.setOwner(ownerId);
         items.put(id, newItem);
         if (!userItemIndex.containsKey(ownerId)) {
-            userItemIndex.put(ownerId, new ArrayList<Item>());
+            userItemIndex.put(ownerId, new ArrayList<>());
         }
         userItemIndex.get(ownerId).add(newItem);
         return newItem;
@@ -46,11 +46,6 @@ public class ItemDtoStorageImpl implements ItemStorage {
             if (ownerId != items.get(id).getOwner()) {
                 throw new OwnerNotFoundException("owner not found");
             }
-        }
-
-        userItemIndex.get(ownerId).remove(items.get(id));
-
-        if (items.containsKey(id)) {
             if (item.getName() == null || item.getName().isBlank()) {
                 item.setName(items.get(id).getName());
             }
@@ -63,6 +58,7 @@ public class ItemDtoStorageImpl implements ItemStorage {
             if (item.getOwner() == 0) {
                 item.setOwner(items.get(id).getOwner());
             }
+            userItemIndex.get(ownerId).remove(items.get(id));
             items.put(id, item);
             userItemIndex.get(ownerId).add(item);
             return item;

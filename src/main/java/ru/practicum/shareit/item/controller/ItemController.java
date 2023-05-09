@@ -7,7 +7,6 @@ import ru.practicum.shareit.item.dto.Item;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemMapper;
 import ru.practicum.shareit.item.exception.EmptyOwnerFieldException;
-import ru.practicum.shareit.item.exception.ShareItBadRequest;
 import ru.practicum.shareit.item.service.ItemService;
 
 import javax.validation.Valid;
