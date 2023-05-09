@@ -1,18 +1,18 @@
 package ru.practicum.shareit.item.service;
 
-import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.Item;
 import ru.practicum.shareit.item.exception.OwnerNotFoundException;
 
 import java.util.List;
 
 public interface ItemService {
-    ItemDto create(ItemDto item, int ownerId) throws OwnerNotFoundException;
+    Item create(Item item, int ownerId) throws OwnerNotFoundException;
 
-    ItemDto update(ItemDto item, int ownerId);
+    Item update(Item item, int ownerId);
 
-    List<ItemDto> getMyItems(int ownerId);
+    List<Item> getMyItems(int ownerId);
 
-    ItemDto getItemById(Integer id);
+    Item getItemById(Integer id);
 
-    List<ItemDto> searchItems(String text);
+    List<Item> searchItems(String text);
 }

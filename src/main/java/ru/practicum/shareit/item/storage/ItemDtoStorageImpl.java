@@ -2,38 +2,44 @@ package ru.practicum.shareit.item.storage;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.Item;
 import ru.practicum.shareit.item.exception.OwnerNotFoundException;
 import ru.practicum.shareit.user.exception.ShareItNotFoundException;
-import ru.practicum.shareit.user.storage.UserDtoStorage;
+import ru.practicum.shareit.user.service.UserService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ItemDtoStorageImpl implements ItemDtoStorage {
-    private final HashMap<Integer, ItemDto> items = new HashMap<>();
-    private final UserDtoStorage userDtoStorage;
+public class ItemDtoStorageImpl implements ItemStorage {
+    private final Map<Integer, Item> items = new HashMap<>();
+    private final Map<Integer, List<Item>> userItemIndex = new LinkedHashMap<>();
+    private final UserService userService;
+
 
     private Integer id = 1;
 
-    public ItemDto create(ItemDto item, int ownerId) {
-        if (userDtoStorage.getUser(ownerId) == null) {
+    @Override
+    public Item create(Item item, int ownerId) {
+        if (userService.getUserById(ownerId) == null) {
             throw new OwnerNotFoundException("Owner not found");
         }
         Integer id = getNextId();
-        ItemDto newItem = item.withId(id);
+        Item newItem = item.withId(id);
         newItem.setOwner(ownerId);
         items.put(id, newItem);
+        if (!userItemIndex.containsKey(ownerId)) {
+            userItemIndex.put(ownerId, new ArrayList<Item>());
+        }
+        userItemIndex.get(ownerId).add(newItem);
         return newItem;
     }
 
-    public ItemDto update(ItemDto item, int ownerId) {
+    @Override
+    public Item update(Item item, int ownerId) {
         int id = item.getId();
-        if (userDtoStorage.getUser(ownerId) == null) {
+        if (userService.getUserById(ownerId) == null) {
             throw new OwnerNotFoundException("Owner not found");
         }
         if (items.containsKey(id)) {
@@ -42,11 +48,13 @@ public class ItemDtoStorageImpl implements ItemDtoStorage {
             }
         }
 
+        userItemIndex.get(ownerId).remove(items.get(id));
+
         if (items.containsKey(id)) {
-            if (item.getName() == null) {
+            if (item.getName() == null || item.getName().isBlank()) {
                 item.setName(items.get(id).getName());
             }
-            if (item.getDescription() == null) {
+            if (item.getDescription() == null || item.getDescription().isBlank()) {
                 item.setDescription(items.get(id).getDescription());
             }
             if (item.getAvailable() == null) {
@@ -55,21 +63,21 @@ public class ItemDtoStorageImpl implements ItemDtoStorage {
             if (item.getOwner() == 0) {
                 item.setOwner(items.get(id).getOwner());
             }
-            if (item.getRequest() == null) {
-                item.setRequest(items.get(id).getRequest());
-            }
             items.put(id, item);
+            userItemIndex.get(ownerId).add(item);
             return item;
         } else {
             throw new ShareItNotFoundException(String.format("Вещь с таким id: %d не найдена.", item.getId()));
         }
     }
 
-    public List<ItemDto> getAllItems() {
+    @Override
+    public List<Item> getAllItems() {
         return new ArrayList<>(items.values());
     }
 
-    public ItemDto getItemById(Integer id) {
+    @Override
+    public Item getItemById(Integer id) {
         if (items.containsKey(id)) {
             return items.get(id);
         } else {
@@ -77,20 +85,18 @@ public class ItemDtoStorageImpl implements ItemDtoStorage {
         }
     }
 
-    public List<ItemDto> getMyItems(int ownerId) {
-        return items.values().stream().filter(itemDto -> itemDto.getOwner() == ownerId).collect(Collectors.toList());
+    @Override
+    public List<Item> getMyItems(int ownerId) {
+        return userItemIndex.get(ownerId);
     }
 
     @Override
-    public List<ItemDto> searchItems(String text) {
-        if (text == null || text.isEmpty() || text.isBlank()) {
-            return new ArrayList<>();
-        }
-        List<ItemDto> searched = new ArrayList<>();
-        searched.addAll(items.values().stream().filter(ItemDto::getAvailable)
+    public List<Item> searchItems(String text) {
+        List<Item> searched = new ArrayList<>();
+        searched.addAll(items.values().stream().filter(Item::getAvailable)
                 .filter(ItemDto -> ItemDto.getName().toLowerCase().contains(text.toLowerCase()))
                 .collect(Collectors.toList()));
-        searched.addAll(items.values().stream().filter(ItemDto::getAvailable)
+        searched.addAll(items.values().stream().filter(Item::getAvailable)
                 .filter(ItemDto -> ItemDto.getDescription().toLowerCase().contains(text.toLowerCase()))
                 .collect(Collectors.toList()));
         return searched.stream().distinct().collect(Collectors.toList());

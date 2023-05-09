@@ -2,38 +2,38 @@ package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.storage.ItemDtoStorageImpl;
+import ru.practicum.shareit.item.dto.Item;
+import ru.practicum.shareit.item.storage.ItemStorage;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class ItemServiceImpl implements ItemService {
-    private final ItemDtoStorageImpl storage;
+    private final ItemStorage storage;
 
     @Override
-    public ItemDto create(ItemDto item, int ownerId) {
+    public Item create(Item item, int ownerId) {
         return storage.create(item, ownerId);
     }
 
     @Override
-    public ItemDto update(ItemDto item, int ownerId) {
+    public Item update(Item item, int ownerId) {
         return storage.update(item, ownerId);
     }
 
     @Override
-    public List<ItemDto> getMyItems(int ownerId) {
+    public List<Item> getMyItems(int ownerId) {
         return storage.getMyItems(ownerId);
     }
 
     @Override
-    public ItemDto getItemById(Integer id) {
+    public Item getItemById(Integer id) {
         return storage.getItemById(id);
     }
 
     @Override
-    public List<ItemDto> searchItems(String text) {
+    public List<Item> searchItems(String text) {
         return storage.searchItems(text);
     }
 

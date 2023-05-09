@@ -2,6 +2,7 @@ package ru.practicum.shareit.user.storage;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.item.exception.OwnerNotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.exception.EmailAlreadyExistsException;
 import ru.practicum.shareit.user.exception.ShareItNotFoundException;
@@ -11,7 +12,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class UserDtoStorageImpl implements UserDtoStorage {
-    private final HashMap<Integer, UserDto> users = new HashMap<>();
+    private final Map<Integer, UserDto> users = new HashMap<>();
     private final Set<String> emailSet = new HashSet<>();
 
     private Integer id = 1;
@@ -35,7 +36,7 @@ public class UserDtoStorageImpl implements UserDtoStorage {
         if (users.containsKey(id)) {
             return users.get(id);
         } else {
-            throw new ShareItNotFoundException(String.format("Пользователь с id: %d не найден.", id));
+            throw new OwnerNotFoundException(String.format("Пользователь с id: %d не найден.", id));
         }
     }
 
@@ -57,11 +58,11 @@ public class UserDtoStorageImpl implements UserDtoStorage {
         int id = user.getId();
 
         if (users.containsKey(id)) {
-            if (user.getName() == null) {
+            if (user.getName() == null || user.getName().isBlank()) {
                 user.setName(users.get(id).getName());
             }
 
-            if (user.getEmail() == null) {
+            if (user.getEmail() == null || user.getEmail().isBlank()) {
                 user.setEmail(users.get(id).getEmail());
             } else {     //проверяем, свободен ли email, который хотят обновить
                 String newEmail = user.getEmail();
