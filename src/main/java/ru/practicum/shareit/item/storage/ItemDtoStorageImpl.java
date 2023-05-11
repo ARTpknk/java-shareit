@@ -46,22 +46,26 @@ public class ItemDtoStorageImpl implements ItemStorage {
             if (ownerId != items.get(id).getOwner()) {
                 throw new OwnerNotFoundException("owner not found");
             }
-            if (item.getName() == null || item.getName().isBlank()) {
-                item.setName(items.get(id).getName());
+            Item updateItem = items.get(id);
+            String name = item.getName();
+            String description = item.getDescription();
+            Boolean available = item.getAvailable();
+            if (name != null && !name.isBlank()) {
+                updateItem.setName(name);
             }
-            if (item.getDescription() == null || item.getDescription().isBlank()) {
-                item.setDescription(items.get(id).getDescription());
+            ;
+            if (description != null && !description.isBlank()) {
+                updateItem.setDescription(description);
             }
-            if (item.getAvailable() == null) {
-                item.setAvailable(items.get(id).getAvailable());
+            ;
+            if (available != null) {
+                updateItem.setAvailable(available);
             }
-            if (item.getOwner() == 0) {
-                item.setOwner(items.get(id).getOwner());
-            }
+            ;
             userItemIndex.get(ownerId).remove(items.get(id));
-            items.put(id, item);
-            userItemIndex.get(ownerId).add(item);
-            return item;
+            items.put(id, updateItem);
+            userItemIndex.get(ownerId).add(updateItem);
+            return updateItem;
         } else {
             throw new ShareItNotFoundException(String.format("Вещь с таким id: %d не найдена.", item.getId()));
         }
