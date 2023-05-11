@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.With;
 
-import javax.validation.constraints.Email;
 
 @Value
 @Builder
