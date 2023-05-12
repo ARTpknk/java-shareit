@@ -2,10 +2,10 @@ package ru.practicum.shareit.user.storage;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.item.exception.OwnerNotFoundException;
+import ru.practicum.shareit.exceptions.model.EmailAlreadyExistsException;
+import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
+import ru.practicum.shareit.exceptions.model.ShareItNotFoundException;
 import ru.practicum.shareit.user.dto.User;
-import ru.practicum.shareit.user.exception.EmailAlreadyExistsException;
-import ru.practicum.shareit.user.exception.ShareItNotFoundException;
 
 import java.util.*;
 
@@ -42,9 +42,8 @@ public class UserDtoStorageImpl implements UserStorage {
 
     public void deleteUserById(Integer id) {
         try {
-            User user = users.get(id);
+            User user = users.remove(id);
             emailSet.remove(user.getEmail());
-            users.remove(id);
         } catch (Exception e) {
             throw new ShareItNotFoundException("User not found");
         }
@@ -78,7 +77,6 @@ public class UserDtoStorageImpl implements UserStorage {
                     }
                 }
             }
-            users.put(id, updateUser);
             return updateUser;
         } else {
             throw new ShareItNotFoundException(String.format("Пользователь с таким id: %d не найден.", user.getId()));
@@ -87,6 +85,6 @@ public class UserDtoStorageImpl implements UserStorage {
 
 
     public User getUser(int id) {
-        return users.getOrDefault(id, null);
+        return users.get(id);
     }
 }

@@ -2,14 +2,18 @@ package ru.practicum.shareit.item.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.classes.Create;
+import ru.practicum.shareit.classes.Update;
 import ru.practicum.shareit.item.dto.Item;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemMapper;
-import ru.practicum.shareit.item.exception.EmptyOwnerFieldException;
+import ru.practicum.shareit.exceptions.model.EmptyOwnerFieldException;
+import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
 import ru.practicum.shareit.item.service.ItemService;
+import ru.practicum.shareit.user.service.UserService;
 
-import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,11 +25,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemService itemService;
+    private final UserService userService;
 
     @PostMapping
-    public ItemDto create(@RequestBody @Valid ItemDto itemDto, @RequestHeader("X-Sharer-User-Id") int ownerId) {
-        if (ownerId == 0) {
+    public ItemDto create(@Validated(Create.class) @RequestBody  ItemDto itemDto, @RequestHeader("X-Sharer-User-Id") int ownerId) {
+        if (ownerId <= 0) {
             throw new EmptyOwnerFieldException("Empty owner field");
+        }
+        if (userService.getUserById(ownerId) == null) {
+            throw new OwnerNotFoundException("Owner not found");
         }
         Item item = ItemMapper.toItem(itemDto, ownerId);
         log.info(String.format("ItemController: create Item request. Data: %s", item));
@@ -33,10 +41,13 @@ public class ItemController {
     }
 
     @PatchMapping("/{id}")
-    public ItemDto update(@PathVariable("id") Integer id, @RequestBody ItemDto itemDto,
+    public ItemDto update(@Validated(Update.class) @PathVariable("id") Integer id, @RequestBody ItemDto itemDto,
                           @RequestHeader("X-Sharer-User-Id") int ownerId) {
-        if (ownerId == 0) {
+        if (ownerId <= 0) {
             throw new EmptyOwnerFieldException("Empty owner field");
+        }
+        if (userService.getUserById(ownerId) == null) {
+            throw new OwnerNotFoundException("Owner not found");
         }
         Item item = ItemMapper.toItem(itemDto, ownerId);
 

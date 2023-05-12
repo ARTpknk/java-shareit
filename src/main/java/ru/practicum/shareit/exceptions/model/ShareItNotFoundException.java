@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user.exception;
+package ru.practicum.shareit.exceptions.model;
 
 public class ShareItNotFoundException extends RuntimeException {
     public ShareItNotFoundException(String message) {

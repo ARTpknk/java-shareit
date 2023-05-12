@@ -1,7 +1,7 @@
 package ru.practicum.shareit.item.service;
 
 import ru.practicum.shareit.item.dto.Item;
-import ru.practicum.shareit.item.exception.OwnerNotFoundException;
+import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
 
 import java.util.List;
 

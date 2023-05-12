@@ -5,7 +5,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ItemMapper {
 
-    public static ItemDto toItemDto(Item item) {
+    public ItemDto toItemDto(Item item) {
         return new ItemDto(item.getId(),
                 item.getName(),
                 item.getDescription(),
@@ -13,7 +13,7 @@ public class ItemMapper {
         );
     }
 
-    public static Item toItem(ItemDto itemDto, int ownerId) {
+    public Item toItem(ItemDto itemDto, int ownerId) {
         return new Item(itemDto.getId(), itemDto.getName(), itemDto.getDescription(), itemDto.getAvailable(), ownerId);
     }
 }
