@@ -1,11 +1,11 @@
-package ru.practicum.shareit.user.model;
+package ru.practicum.shareit.user.dto;
 
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
 import lombok.With;
 
 
-@Value
+@Data
 @Builder
 public class User { //для Базы Данных
     @With

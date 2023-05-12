@@ -3,7 +3,7 @@ package ru.practicum.shareit.user.storage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.item.exception.OwnerNotFoundException;
-import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.dto.User;
 import ru.practicum.shareit.user.exception.EmailAlreadyExistsException;
 import ru.practicum.shareit.user.exception.ShareItNotFoundException;
 
@@ -11,28 +11,28 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class UserDtoStorageImpl implements UserDtoStorage {
-    private final Map<Integer, UserDto> users = new HashMap<>();
+public class UserDtoStorageImpl implements UserStorage {
+    private final Map<Integer, User> users = new HashMap<>();
     private final Set<String> emailSet = new HashSet<>();
 
     private Integer id = 1;
 
-    public UserDto create(UserDto user) {
+    public User create(User user) {
         if (emailSet.contains(user.getEmail())) {
             throw new EmailAlreadyExistsException("Email already exists");
         }
         Integer id = getNextId();
-        UserDto newUser = user.withId(id);
+        User newUser = user.withId(id);
         users.put(id, newUser);
         emailSet.add(user.getEmail());
         return newUser;
     }
 
-    public List<UserDto> getAllUsers() {
+    public List<User> getAllUsers() {
         return new ArrayList<>(users.values());
     }
 
-    public UserDto getUserById(Integer id) {
+    public User getUserById(Integer id) {
         if (users.containsKey(id)) {
             return users.get(id);
         } else {
@@ -42,7 +42,7 @@ public class UserDtoStorageImpl implements UserDtoStorage {
 
     public void deleteUserById(Integer id) {
         try {
-            UserDto user = users.get(id);
+            User user = users.get(id);
             emailSet.remove(user.getEmail());
             users.remove(id);
         } catch (Exception e) {
@@ -54,36 +54,39 @@ public class UserDtoStorageImpl implements UserDtoStorage {
         return id++;
     }
 
-    public UserDto update(UserDto user) {
+    public User update(User user) {
         int id = user.getId();
 
         if (users.containsKey(id)) {
-            if (user.getName() == null || user.getName().isBlank()) {
-                user.setName(users.get(id).getName());
+            User updateUser = users.get(id);
+            String name = user.getName();
+            String email = user.getEmail();
+
+            if (name != null && !name.isBlank()) {
+                updateUser.setName(name);
             }
 
-            if (user.getEmail() == null || user.getEmail().isBlank()) {
-                user.setEmail(users.get(id).getEmail());
-            } else {     //проверяем, свободен ли email, который хотят обновить
-                String newEmail = user.getEmail();
-                String oldEmail = users.get(id).getEmail();
-                if (!oldEmail.equals(newEmail)) {
-                    if (emailSet.contains(newEmail)) {
+            if (email != null && !email.isBlank()) {
+                String oldEmail = updateUser.getEmail();
+                if (!oldEmail.equals(email)) {
+                    if (emailSet.contains(email)) {
                         throw new EmailAlreadyExistsException("Email already exists");
                     } else {
                         emailSet.remove(oldEmail);
-                        emailSet.add(newEmail);
+                        emailSet.add(email);
+                        updateUser.setEmail(email);
                     }
                 }
             }
-            users.put(id, user);
-            return user;
+            users.put(id, updateUser);
+            return updateUser;
         } else {
             throw new ShareItNotFoundException(String.format("Пользователь с таким id: %d не найден.", user.getId()));
         }
     }
 
-    public UserDto getUser(int id) {
+
+    public User getUser(int id) {
         return users.getOrDefault(id, null);
     }
 }
