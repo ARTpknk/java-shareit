@@ -1,21 +1,7 @@
 package ru.practicum.shareit.item.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.With;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-@Data
-@Builder
+/**
+ * TODO Sprint add-controllers.
+ */
 public class ItemDto {
-    @With
-    private int id;
-    @NotBlank
-    private String name;
-    @NotBlank
-    private String description;
-    @NotNull
-    private Boolean available;
 }
