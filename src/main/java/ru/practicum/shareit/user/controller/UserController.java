@@ -6,6 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.classes.Create;
 import ru.practicum.shareit.classes.Update;
+import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
 import ru.practicum.shareit.user.dto.User;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserMapper;
@@ -48,6 +49,9 @@ public class UserController {
 
     @DeleteMapping("/{userId}")
     public void deleteUserById(@PathVariable("userId") Integer userId) {
+        if (userService.getUserById(userId) == null) {
+            throw new OwnerNotFoundException("Owner not found");
+        }
         userService.deleteUserById(userId);
         log.info(String.format("UserController: Remove user with id: %d.", userId));
     }

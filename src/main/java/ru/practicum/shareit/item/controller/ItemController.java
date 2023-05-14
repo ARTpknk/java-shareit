@@ -9,8 +9,6 @@ import ru.practicum.shareit.classes.Update;
 import ru.practicum.shareit.item.dto.Item;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemMapper;
-import ru.practicum.shareit.exceptions.model.EmptyOwnerFieldException;
-import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.service.UserService;
 
@@ -25,16 +23,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemService itemService;
-    private final UserService userService;
 
     @PostMapping
-    public ItemDto create(@Validated(Create.class) @RequestBody  ItemDto itemDto, @RequestHeader("X-Sharer-User-Id") int ownerId) {
-        if (ownerId <= 0) {
-            throw new EmptyOwnerFieldException("Empty owner field");
-        }
-        if (userService.getUserById(ownerId) == null) {
-            throw new OwnerNotFoundException("Owner not found");
-        }
+    public ItemDto create(@Validated(Create.class) @RequestBody ItemDto itemDto, @RequestHeader("X-Sharer-User-Id") int ownerId) {
         Item item = ItemMapper.toItem(itemDto, ownerId);
         log.info(String.format("ItemController: create Item request. Data: %s", item));
         return ItemMapper.toItemDto(itemService.create(item, ownerId));
@@ -43,12 +34,7 @@ public class ItemController {
     @PatchMapping("/{id}")
     public ItemDto update(@Validated(Update.class) @PathVariable("id") Integer id, @RequestBody ItemDto itemDto,
                           @RequestHeader("X-Sharer-User-Id") int ownerId) {
-        if (ownerId <= 0) {
-            throw new EmptyOwnerFieldException("Empty owner field");
-        }
-        if (userService.getUserById(ownerId) == null) {
-            throw new OwnerNotFoundException("Owner not found");
-        }
+
         Item item = ItemMapper.toItem(itemDto, ownerId);
 
         log.info(String.format("ItemController: update Item request. Data: %s", item));

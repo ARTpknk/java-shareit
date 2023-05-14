@@ -41,12 +41,9 @@ public class UserDtoStorageImpl implements UserStorage {
     }
 
     public void deleteUserById(Integer id) {
-        try {
-            User user = users.remove(id);
-            emailSet.remove(user.getEmail());
-        } catch (Exception e) {
-            throw new ShareItNotFoundException("User not found");
-        }
+
+        User user = users.remove(id);
+        emailSet.remove(user.getEmail());
     }
 
     public Integer getNextId() {
@@ -55,7 +52,6 @@ public class UserDtoStorageImpl implements UserStorage {
 
     public User update(User user) {
         int id = user.getId();
-
         if (users.containsKey(id)) {
             User updateUser = users.get(id);
             String name = user.getName();
