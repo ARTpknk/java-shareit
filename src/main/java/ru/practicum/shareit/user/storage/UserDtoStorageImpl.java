@@ -21,11 +21,11 @@ public class UserDtoStorageImpl implements UserStorage {
         if (emailSet.contains(user.getEmail())) {
             throw new EmailAlreadyExistsException("Email already exists");
         }
-        Integer id = getNextId();
-        User newUser = user.withId(id);
-        users.put(id, newUser);
         emailSet.add(user.getEmail());
-        return newUser;
+        Integer id = getNextId();
+        user.setId(id);
+        users.put(id, user);
+        return user;
     }
 
     public List<User> getAllUsers() {

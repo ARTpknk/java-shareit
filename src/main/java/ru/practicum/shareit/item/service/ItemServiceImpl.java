@@ -3,16 +3,19 @@ package ru.practicum.shareit.item.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
+import ru.practicum.shareit.exceptions.model.ShareItNotFoundException;
 import ru.practicum.shareit.item.dto.Item;
+import ru.practicum.shareit.item.storage.ItemRepository;
 import ru.practicum.shareit.item.storage.ItemStorage;
 import ru.practicum.shareit.user.service.UserService;
+import ru.practicum.shareit.user.storage.UserRepository;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class ItemServiceImpl implements ItemService {
-    private final ItemStorage storage;
+    private final ItemRepository repository;
     private final UserService userService;
 
     @Override
@@ -20,7 +23,8 @@ public class ItemServiceImpl implements ItemService {
         if (userService.getUserById(ownerId) == null) {
             throw new OwnerNotFoundException("Owner not found");
         }
-        return storage.create(item, ownerId);
+        item.setOwnerId(ownerId);
+        return repository.save(item);
     }
 
     @Override
@@ -28,22 +32,54 @@ public class ItemServiceImpl implements ItemService {
         if (userService.getUserById(ownerId) == null) {
             throw new OwnerNotFoundException("Owner not found");
         }
-        return storage.update(item, ownerId);
+        int id = item.getId();
+        if(repository.findById(id).isPresent()){
+            item.setOwnerId(ownerId);
+            Item updateItem = repository.findById(id).get();
+            String name = item.getName();
+            String description = item.getDescription();
+            Boolean available = item.getAvailable();
+            if (name != null && !name.isBlank()) {
+                updateItem.setName(name);
+            }
+            if (description != null && !description.isBlank()) {
+                updateItem.setDescription(description);
+            }
+            if (available != null) {
+                updateItem.setAvailable(available);
+            }
+            return repository.save(updateItem);
+        }
+        else {
+            throw new ShareItNotFoundException(String.format("Вещь с таким id: %d не найдена.", id));
+        }
+
+
     }
 
     @Override
     public List<Item> getMyItems(int ownerId) {
-        return storage.getMyItems(ownerId);
+        System.out.println(repository.findItemsByOwnerId(ownerId));
+        return repository.findItemsByOwnerId(ownerId);
     }
+
+
 
     @Override
     public Item getItemById(Integer id) {
-        return storage.getItemById(id);
+        if(repository.findById(id).isPresent()){
+            return repository.findById(id).get();
+        }
+        else{
+            throw new OwnerNotFoundException("вещь не найдена");
+        }
     }
 
     @Override
     public List<Item> searchItems(String text) {
-        return storage.searchItems(text);
+        return repository.search(text);
     }
+
+
 
 }

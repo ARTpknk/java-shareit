@@ -4,13 +4,34 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.With;
 
+import javax.persistence.*;
+
 @Data
-@Builder
+@Entity
+@Table(name = "items")
 public class Item {
-    @With
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "item_id", nullable = false)
+
     int id;
+    @Column(name = "item_name", length=255, nullable=false)
     String name;
+    @Column(name = "item_description", length=512, nullable=false)
     String description;
+    @Column(name = "is_available")
     Boolean available;
-    int owner;
+    @Column(name = "owner_id", nullable=false)
+    int ownerId;
+
+    public Item() {
+    }
+
+    public Item(int id, String name, String description, Boolean available, int ownerId) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.available = available;
+        this.ownerId = ownerId;
+    }
 }

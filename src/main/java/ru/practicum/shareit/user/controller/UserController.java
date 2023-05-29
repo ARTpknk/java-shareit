@@ -34,7 +34,8 @@ public class UserController {
     public UserDto update(@Validated(Update.class) @PathVariable("id") Integer id, @RequestBody UserDto userDto) {
         User user = UserMapper.toUser(userDto);
         log.info(String.format("UserController: update User request. Data: %s", user));
-        return UserMapper.toUserDto(userService.update(user.withId(id)));
+        user.setId(id);
+        return UserMapper.toUserDto(userService.update(user));
     }
 
     @GetMapping

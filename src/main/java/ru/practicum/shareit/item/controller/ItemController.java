@@ -37,13 +37,16 @@ public class ItemController {
         Item item = ItemMapper.toItem(itemDto, ownerId);
 
         log.info(String.format("ItemController: update Item request. Data: %s", item));
-        return ItemMapper.toItemDto(itemService.update(item.withId(id), ownerId));
+        item.setId(id);
+        return ItemMapper.toItemDto(itemService.update(item, ownerId));
     }
 
     @GetMapping("/{id}")
     public ItemDto findItemBy(@PathVariable("id") Integer id) {
         return ItemMapper.toItemDto(itemService.getItemById(id));
     }
+
+
 
     @GetMapping
     public List<ItemDto> findMyItems(@RequestHeader("X-Sharer-User-Id") int ownerId) {
@@ -59,4 +62,5 @@ public class ItemController {
         return itemService.searchItems(text).stream()
                 .map(ItemMapper::toItemDto).collect(Collectors.toList());
     }
+
 }

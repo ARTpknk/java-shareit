@@ -20,21 +20,21 @@ public class ItemDtoStorageImpl implements ItemStorage {
     @Override
     public Item create(Item item, int ownerId) {
         Integer id = getNextId();
-        Item newItem = item.withId(id);
-        newItem.setOwner(ownerId);
-        items.put(id, newItem);
+        item.setId(id);
+        item.setOwnerId(ownerId);
+        items.put(id, item);
         if (!userItemIndex.containsKey(ownerId)) {
             userItemIndex.put(ownerId, new ArrayList<>());
         }
-        userItemIndex.get(ownerId).add(newItem);
-        return newItem;
+        userItemIndex.get(ownerId).add(item);
+        return item;
     }
 
     @Override
     public Item update(Item item, int ownerId) {
         int id = item.getId();
         if (items.containsKey(id)) {
-            if (ownerId != items.get(id).getOwner()) {
+            if (ownerId != items.get(id).getOwnerId()) {
                 throw new OwnerNotFoundException("owner not found");
             }
             Item updateItem = getItemById(id);
