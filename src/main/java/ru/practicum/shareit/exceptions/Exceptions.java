@@ -5,10 +5,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import ru.practicum.shareit.exceptions.model.EmailAlreadyExistsException;
-import ru.practicum.shareit.exceptions.model.EmptyOwnerFieldException;
-import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
-import ru.practicum.shareit.exceptions.model.ShareItNotFoundException;
+import ru.practicum.shareit.exceptions.model.*;
 
 import java.util.Date;
 
@@ -32,11 +29,13 @@ public class Exceptions {
     public ErrorMessage internalServerError(EmptyOwnerFieldException ex, WebRequest request) {
 
         return new ErrorMessage(
-                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 new Date(),
                 ex.getMessage(),
                 request.getDescription(false));
     }
+
+
 
 
 }

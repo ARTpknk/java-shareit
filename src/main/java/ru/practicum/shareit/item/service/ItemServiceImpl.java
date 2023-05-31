@@ -59,7 +59,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> getMyItems(int ownerId) {
-        System.out.println(repository.findItemsByOwnerId(ownerId));
         return repository.findItemsByOwnerId(ownerId);
     }
 
