@@ -1,6 +1,6 @@
-package ru.practicum.shareit.user.dto;
+package ru.practicum.shareit.user.model;
 
-import lombok.*;
+import lombok.Data;
 
 import javax.persistence.*;
 
@@ -13,13 +13,13 @@ public class User { //для Базы Данных
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
     int id;
-    @Column(name = "user_name", length=255, nullable=false)
+    @Column(name = "user_name", nullable = false)
     String name;
-    @Column(name = "user_email", length=512, nullable=false, unique=true)
+    @Column(name = "user_email", length = 512, nullable = false, unique = true)
     String email;
 
-User(){
-}
+    User() {
+    }
 
     public User(int id, String name, String email) {
         this.id = id;

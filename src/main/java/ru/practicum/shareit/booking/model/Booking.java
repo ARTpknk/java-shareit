@@ -1,8 +1,8 @@
-package ru.practicum.shareit.booking;
+package ru.practicum.shareit.booking.model;
 
 import lombok.Data;
-import ru.practicum.shareit.item.dto.Item;
-import ru.practicum.shareit.user.dto.User;
+import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -31,7 +31,7 @@ public class Booking {
     @Enumerated(EnumType.STRING)
     BookingStatus status;
 
-    public Booking(){
+    public Booking() {
     }
 
     public Booking(int id, LocalDateTime start, LocalDateTime end, Integer itemId, Integer bookerId,

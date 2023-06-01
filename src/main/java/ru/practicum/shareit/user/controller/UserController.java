@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.classes.Create;
 import ru.practicum.shareit.classes.Update;
 import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
-import ru.practicum.shareit.user.dto.User;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserMapper;
+import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;

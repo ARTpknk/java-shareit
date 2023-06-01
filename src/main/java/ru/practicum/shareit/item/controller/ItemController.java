@@ -6,10 +6,15 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.classes.Create;
 import ru.practicum.shareit.classes.Update;
-import ru.practicum.shareit.item.dto.Item;
+import ru.practicum.shareit.item.comment.Comment;
+import ru.practicum.shareit.item.comment.CommentDto;
+import ru.practicum.shareit.item.comment.CommentMapper;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemMapper;
+import ru.practicum.shareit.item.dto.ItemWithBookingsDto;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
+import ru.practicum.shareit.user.service.UserService;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemService itemService;
+    private final UserService userService;
 
     @PostMapping
     public ItemDto create(@Validated(Create.class) @RequestBody ItemDto itemDto, @RequestHeader("X-Sharer-User-Id") int ownerId) {
@@ -42,16 +48,20 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    public ItemDto findItemBy(@PathVariable("id") Integer id) {
-        return ItemMapper.toItemDto(itemService.getItemById(id));
+    public ItemWithBookingsDto findItemBy(@PathVariable("id") Integer id,
+                                          @RequestHeader("X-Sharer-User-Id") int userId) {
+        return ItemMapper.toItemWithBookingsDto(itemService.getItemById(id), itemService.getLastBooking(id, userId),
+                itemService.getNextBooking(id, userId), itemService.getComments(id)
+                        .stream().map((Comment comment) -> (CommentMapper.toCommentDto(comment, itemService.getUserName(comment.getAuthorId())))).collect(Collectors.toList()));
     }
 
-
-
     @GetMapping
-    public List<ItemDto> findMyItems(@RequestHeader("X-Sharer-User-Id") int ownerId) {
+    public List<ItemWithBookingsDto> findMyItems(@RequestHeader("X-Sharer-User-Id") int ownerId) {
         return itemService.getMyItems(ownerId).stream()
-                .map(ItemMapper::toItemDto).collect(Collectors.toList());
+                .map((Item item) -> ItemMapper.toItemWithBookingsDto(item, itemService.getLastBooking(item.getId(), ownerId),
+                        itemService.getNextBooking(item.getId(), ownerId), itemService.getComments(item.getId())
+                                .stream().map((Comment comment) -> (CommentMapper.toCommentDto(comment, itemService.getUserName(comment.getAuthorId())))).collect(Collectors.toList())))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/search")
@@ -63,4 +73,14 @@ public class ItemController {
                 .map(ItemMapper::toItemDto).collect(Collectors.toList());
     }
 
+    @PostMapping("{itemId}/comment")
+    public CommentDto createComment(@Validated(Create.class) @RequestBody CommentDto commentDto,
+                                    @RequestHeader("X-Sharer-User-Id") int authorId,
+                                    @PathVariable("itemId") Integer itemId) {
+        Comment comment = CommentMapper.toComment(commentDto, itemId, authorId);
+        comment.setAuthorId(authorId);
+        comment.setItemId(itemId);
+        return CommentMapper.toCommentDto(itemService.createComment(comment),
+                userService.getUserById(authorId).getName());
+    }
 }

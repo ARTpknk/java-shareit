@@ -5,7 +5,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import ru.practicum.shareit.exceptions.model.*;
+import ru.practicum.shareit.exceptions.model.EmailAlreadyExistsException;
+import ru.practicum.shareit.exceptions.model.EmptyOwnerFieldException;
+import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
+import ru.practicum.shareit.exceptions.model.ShareItNotFoundException;
 
 import java.util.Date;
 
@@ -34,8 +37,6 @@ public class Exceptions {
                 ex.getMessage(),
                 request.getDescription(false));
     }
-
-
 
 
 }

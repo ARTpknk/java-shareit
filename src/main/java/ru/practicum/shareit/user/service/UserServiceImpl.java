@@ -2,14 +2,12 @@ package ru.practicum.shareit.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.exceptions.model.EmailAlreadyExistsException;
 import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
 import ru.practicum.shareit.exceptions.model.ShareItNotFoundException;
-import ru.practicum.shareit.user.dto.User;
+import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.storage.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -28,10 +26,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Integer id) {
-        if(repository.findById(id).isPresent()){
+        if (repository.findById(id).isPresent()) {
             return repository.findById(id).get();
-        }
-        else{
+        } else {
             throw new OwnerNotFoundException("пользователь не найден");
         }
     }
@@ -49,11 +46,10 @@ public class UserServiceImpl implements UserService {
             }
 
             if (email != null && !email.isBlank()) {
-                        updateUser.setEmail(email);
+                updateUser.setEmail(email);
             }
             return repository.save(updateUser);
-        }
-        else {
+        } else {
             throw new ShareItNotFoundException(String.format("Пользователь с таким id: %d не найден.", id));
         }
     }

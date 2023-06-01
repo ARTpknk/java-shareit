@@ -1,8 +1,6 @@
-package ru.practicum.shareit.item.dto;
+package ru.practicum.shareit.item.model;
 
-import lombok.Builder;
 import lombok.Data;
-import lombok.With;
 
 import javax.persistence.*;
 
@@ -15,13 +13,13 @@ public class Item {
     @Column(name = "item_id", nullable = false)
 
     int id;
-    @Column(name = "item_name", length=255, nullable=false)
+    @Column(name = "item_name", length = 255, nullable = false)
     String name;
-    @Column(name = "item_description", length=512, nullable=false)
+    @Column(name = "item_description", length = 512, nullable = false)
     String description;
     @Column(name = "is_available")
     Boolean available;
-    @Column(name = "owner_id", nullable=false)
+    @Column(name = "owner_id", nullable = false)
     int ownerId;
 
     public Item() {

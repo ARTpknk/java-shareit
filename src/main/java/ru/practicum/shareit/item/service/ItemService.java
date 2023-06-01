@@ -1,7 +1,9 @@
 package ru.practicum.shareit.item.service;
 
-import ru.practicum.shareit.item.dto.Item;
+import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
+import ru.practicum.shareit.item.comment.Comment;
+import ru.practicum.shareit.item.model.Item;
 
 import java.util.List;
 
@@ -16,5 +18,13 @@ public interface ItemService {
 
     List<Item> searchItems(String text);
 
+    Booking getLastBooking(int itemId, int userId);
 
+    Booking getNextBooking(int itemId, int userId);
+
+    Comment createComment(Comment comment);
+
+    List<Comment> getComments(int itemId);
+
+    String getUserName(int userId);
 }

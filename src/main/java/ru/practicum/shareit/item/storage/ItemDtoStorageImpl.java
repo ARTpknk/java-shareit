@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
 import ru.practicum.shareit.exceptions.model.ShareItNotFoundException;
-import ru.practicum.shareit.item.dto.Item;
+import ru.practicum.shareit.item.model.Item;
 
 import java.util.*;
 import java.util.stream.Collectors;

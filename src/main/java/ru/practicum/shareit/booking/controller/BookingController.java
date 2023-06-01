@@ -1,4 +1,4 @@
-package ru.practicum.shareit.booking;
+package ru.practicum.shareit.booking.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,13 +9,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingMapper;
+import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.booking.model.BookingStatus;
+import ru.practicum.shareit.booking.model.State;
+import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.classes.Create;
 import ru.practicum.shareit.classes.Update;
-import ru.practicum.shareit.exceptions.model.ShareItNotFoundException;
-import ru.practicum.shareit.item.dto.Item;
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.ItemMapper;
-import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.List;
 import java.util.Map;
@@ -42,28 +41,27 @@ public class BookingController {
 
     @PatchMapping("/{bookingId}")
     public BookingDto update(@Validated(Update.class) @PathVariable("bookingId") Integer id,
-                          @RequestHeader("X-Sharer-User-Id") int ownerId,
-                             @RequestParam(required = false, defaultValue = "true") boolean approved ) {
+                             @RequestHeader("X-Sharer-User-Id") int ownerId,
+                             @RequestParam(required = false, defaultValue = "true") boolean approved) {
         return BookingMapper.toBookingDto(bookingService.update(id, ownerId, approved));
     }
 
     @GetMapping("/{bookingId}")
-    public BookingDto getMyBooking( @PathVariable("bookingId") Integer id,
-                                @RequestHeader("X-Sharer-User-Id") int userId) {
+    public BookingDto getMyBooking(@PathVariable("bookingId") Integer id,
+                                   @RequestHeader("X-Sharer-User-Id") int userId) {
         return BookingMapper.toBookingDto(bookingService.getMyBooking(id, userId));
     }
 
-
     @GetMapping
     public List<BookingDto> getMyBookings(@RequestHeader("X-Sharer-User-Id") int userId,
-                                       @RequestParam(required = false, defaultValue = "ALL") State state) {
+                                          @RequestParam(required = false, defaultValue = "ALL") State state) {
         return bookingService.getMyBookings(userId, state).stream().map(BookingMapper::toBookingDto)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/owner")
     public List<BookingDto> getOwnerBookings(@RequestHeader("X-Sharer-User-Id") int ownerId,
-                                          @RequestParam(required = false, defaultValue = "ALL") State state) {
+                                             @RequestParam(required = false, defaultValue = "ALL") State state) {
         return bookingService.getOwnerBookings(ownerId, state).stream().map(BookingMapper::toBookingDto)
                 .collect(Collectors.toList());
     }
@@ -75,5 +73,4 @@ public class BookingController {
                 HttpStatus.BAD_REQUEST
         );
     }
-
 }

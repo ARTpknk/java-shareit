@@ -1,13 +1,17 @@
-package ru.practicum.shareit.booking;
+package ru.practicum.shareit.booking.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.booking.model.BookingStatus;
+import ru.practicum.shareit.booking.model.State;
+import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
 import ru.practicum.shareit.exceptions.model.ShareItBadRequest;
 import ru.practicum.shareit.exceptions.model.ShareItNotFoundException;
-import ru.practicum.shareit.item.dto.Item;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
-import ru.practicum.shareit.user.dto.User;
+import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.time.LocalDateTime;
@@ -22,7 +26,6 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository repository;
     private final UserService userService;
     private final ItemService itemService;
-
 
     @Override
     public Booking create(Booking booking, int bookerId) {
@@ -64,7 +67,7 @@ public class BookingServiceImpl implements BookingService {
     public Booking update(int id, int ownerId, boolean approved) {
         if (repository.findById(id).isPresent()) {
             Booking booking = repository.findById(id).get();
-            if (booking.status == BookingStatus.WAITING) {
+            if (booking.getStatus() == BookingStatus.WAITING) {
                 Item item = itemService.getItemById(booking.getItemId());
                 if (item.getOwnerId() == ownerId) {
                     if (approved) {
@@ -88,7 +91,6 @@ public class BookingServiceImpl implements BookingService {
             throw new ShareItNotFoundException(" Booking не найден");
         }
     }
-
 
     public Booking getMyBooking(int id, int userId) {
         if (repository.findById(id).isPresent()) {
@@ -155,13 +157,11 @@ public class BookingServiceImpl implements BookingService {
                     .map(this::setItem).map(this::setBooker)
                     .collect(Collectors.toList());
         }
-
         if (state == State.FUTURE) {
             return repository.findAllByOwnerIdFuture(userId, LocalDateTime.now()).stream()
                     .map(this::setItem).map(this::setBooker)
                     .collect(Collectors.toList());
         }
-
         if (state == State.PAST) {
             return repository.findAllByOwnerIdPast(userId, LocalDateTime.now()).stream()
                     .map(this::setItem).map(this::setBooker)
@@ -173,7 +173,6 @@ public class BookingServiceImpl implements BookingService {
                     .map(this::setItem).map(this::setBooker)
                     .collect(Collectors.toList());
         }
-
         if (state == State.WAITING) {
             return repository.findAllByOwnerIdWaiting(userId).stream()
                     .map(this::setItem).map(this::setBooker)
@@ -184,26 +183,6 @@ public class BookingServiceImpl implements BookingService {
                     .map(this::setItem).map(this::setBooker)
                     .collect(Collectors.toList());
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         return Collections.emptyList();
     }
 
@@ -216,5 +195,4 @@ public class BookingServiceImpl implements BookingService {
         booking.setBooker(userService.getUserById(booking.getBookerId()));
         return booking;
     }
-
 }
