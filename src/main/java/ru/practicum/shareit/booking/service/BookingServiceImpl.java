@@ -113,38 +113,35 @@ public class BookingServiceImpl implements BookingService {
         if (userService.getUserById(userId) == null) {
             throw new OwnerNotFoundException("Owner not found");
         }
-        if (state == State.ALL) {
-            return repository.findBookingsByBookerIdOrderByStartDesc(userId).stream()
-                    .map(this::setItem).map(this::setBooker)
-                    .collect(Collectors.toList());
+        switch (state) {
+            case ALL:
+                return repository.findBookingsByBookerIdOrderByStartDesc(userId).stream()
+                        .map(this::setItem).map(this::setBooker)
+                        .collect(Collectors.toList());
+            case FUTURE:
+                return repository.findAllByBookerIdAndStartAfterOrderByStartDesc(userId, LocalDateTime.now()).stream()
+                        .map(this::setItem).map(this::setBooker)
+                        .collect(Collectors.toList());
+            case PAST:
+                return repository.findAllByBookerIdAndEndBeforeOrderByStartDesc(userId, LocalDateTime.now()).stream()
+                        .map(this::setItem).map(this::setBooker)
+                        .collect(Collectors.toList());
+            case CURRENT:
+                return repository.findAllByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(userId,
+                                LocalDateTime.now(), LocalDateTime.now()).stream()
+                        .map(this::setItem).map(this::setBooker)
+                        .collect(Collectors.toList());
+            case WAITING:
+                return repository.findAllByBookerIdAndStatus(userId, BookingStatus.WAITING).stream()
+                        .map(this::setItem).map(this::setBooker)
+                        .collect(Collectors.toList());
+            case REJECTED:
+                return repository.findAllByBookerIdAndStatus(userId, BookingStatus.REJECTED).stream()
+                        .map(this::setItem).map(this::setBooker)
+                        .collect(Collectors.toList());
+            default:
+                return Collections.emptyList();
         }
-        if (state == State.FUTURE) {
-            return repository.findAllByBookerIdAndStartAfterOrderByStartDesc(userId, LocalDateTime.now()).stream()
-                    .map(this::setItem).map(this::setBooker)
-                    .collect(Collectors.toList());
-        }
-        if (state == State.PAST) {
-            return repository.findAllByBookerIdAndEndBeforeOrderByStartDesc(userId, LocalDateTime.now()).stream()
-                    .map(this::setItem).map(this::setBooker)
-                    .collect(Collectors.toList());
-        }
-        if (state == State.CURRENT) {
-            return repository.findAllByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(userId,
-                            LocalDateTime.now(), LocalDateTime.now()).stream()
-                    .map(this::setItem).map(this::setBooker)
-                    .collect(Collectors.toList());
-        }
-        if (state == State.WAITING) {
-            return repository.findAllByBookerIdAndStatus(userId, BookingStatus.WAITING).stream()
-                    .map(this::setItem).map(this::setBooker)
-                    .collect(Collectors.toList());
-        }
-        if (state == State.REJECTED) {
-            return repository.findAllByBookerIdAndStatus(userId, BookingStatus.REJECTED).stream()
-                    .map(this::setItem).map(this::setBooker)
-                    .collect(Collectors.toList());
-        }
-        return Collections.emptyList();
     }
 
     @Override
@@ -152,38 +149,35 @@ public class BookingServiceImpl implements BookingService {
         if (userService.getUserById(userId) == null) {
             throw new OwnerNotFoundException("Owner not found");
         }
-        if (state == State.ALL) {
-            return repository.findAllByOwnerId(userId).stream()
-                    .map(this::setItem).map(this::setBooker)
-                    .collect(Collectors.toList());
+        switch (state) {
+            case ALL:
+                return repository.findAllByOwnerId(userId).stream()
+                        .map(this::setItem).map(this::setBooker)
+                        .collect(Collectors.toList());
+            case FUTURE:
+                return repository.findAllByOwnerIdFuture(userId, LocalDateTime.now()).stream()
+                        .map(this::setItem).map(this::setBooker)
+                        .collect(Collectors.toList());
+            case PAST:
+                return repository.findAllByOwnerIdPast(userId, LocalDateTime.now()).stream()
+                        .map(this::setItem).map(this::setBooker)
+                        .collect(Collectors.toList());
+            case CURRENT:
+                return repository.findAllByOwnerIdNow(userId,
+                                LocalDateTime.now()).stream()
+                        .map(this::setItem).map(this::setBooker)
+                        .collect(Collectors.toList());
+            case WAITING:
+                return repository.findAllByOwnerIdWaiting(userId).stream()
+                        .map(this::setItem).map(this::setBooker)
+                        .collect(Collectors.toList());
+            case REJECTED:
+                return repository.findAllByOwnerIdRejected(userId).stream()
+                        .map(this::setItem).map(this::setBooker)
+                        .collect(Collectors.toList());
+            default:
+                return Collections.emptyList();
         }
-        if (state == State.FUTURE) {
-            return repository.findAllByOwnerIdFuture(userId, LocalDateTime.now()).stream()
-                    .map(this::setItem).map(this::setBooker)
-                    .collect(Collectors.toList());
-        }
-        if (state == State.PAST) {
-            return repository.findAllByOwnerIdPast(userId, LocalDateTime.now()).stream()
-                    .map(this::setItem).map(this::setBooker)
-                    .collect(Collectors.toList());
-        }
-        if (state == State.CURRENT) {
-            return repository.findAllByOwnerIdNow(userId,
-                            LocalDateTime.now()).stream()
-                    .map(this::setItem).map(this::setBooker)
-                    .collect(Collectors.toList());
-        }
-        if (state == State.WAITING) {
-            return repository.findAllByOwnerIdWaiting(userId).stream()
-                    .map(this::setItem).map(this::setBooker)
-                    .collect(Collectors.toList());
-        }
-        if (state == State.REJECTED) {
-            return repository.findAllByOwnerIdRejected(userId).stream()
-                    .map(this::setItem).map(this::setBooker)
-                    .collect(Collectors.toList());
-        }
-        return Collections.emptyList();
     }
 
     public Booking setItem(Booking booking) {

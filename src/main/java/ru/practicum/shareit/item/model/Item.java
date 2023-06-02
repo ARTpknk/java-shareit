@@ -10,17 +10,16 @@ import javax.persistence.*;
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "item_id", nullable = false)
-
-    int id;
+    @Column(name = "id", nullable = false)
+    private int id;
     @Column(name = "item_name", length = 255, nullable = false)
-    String name;
+    private String name;
     @Column(name = "item_description", length = 512, nullable = false)
-    String description;
+    private String description;
     @Column(name = "is_available")
-    Boolean available;
+    private Boolean available;
     @Column(name = "owner_id", nullable = false)
-    int ownerId;
+    private int ownerId;
 
     public Item() {
     }

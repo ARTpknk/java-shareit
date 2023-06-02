@@ -4,10 +4,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.With;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
@@ -15,9 +11,9 @@ import java.time.LocalDateTime;
 @Builder
 public class CommentDto {
     @With
-    int id;
+    private int id;
     @NotBlank
-    String text;
-    String authorName;
-    LocalDateTime created;
+    private String text;
+    private String authorName;
+    private LocalDateTime created;
 }

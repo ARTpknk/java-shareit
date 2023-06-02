@@ -11,12 +11,12 @@ import javax.persistence.*;
 public class User { //для Базы Данных
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false)
-    int id;
+    @Column(name = "id", nullable = false)
+    private int id;
     @Column(name = "user_name", nullable = false)
-    String name;
+    private String name;
     @Column(name = "user_email", length = 512, nullable = false, unique = true)
-    String email;
+    private String email;
 
     User() {
     }

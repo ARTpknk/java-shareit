@@ -13,23 +13,23 @@ import java.time.LocalDateTime;
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booking_id", nullable = false)
-    int id;
+    @Column(name = "id", nullable = false)
+    private int id;
     @Column(name = "start_date", nullable = false)
-    LocalDateTime start;
+    private LocalDateTime start;
     @Column(name = "end_date", nullable = false)
-    LocalDateTime end;
+    private LocalDateTime end;
     @Column(name = "item_id", nullable = false)
-    Integer itemId;
+    private Integer itemId;
     @Transient
-    Item item;
+    private Item item;
     @Column(name = "booker_id", nullable = false)
-    Integer bookerId;
+    private Integer bookerId;
     @Transient
-    User booker;
+    private User booker;
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    BookingStatus status;
+    private BookingStatus status;
 
     public Booking() {
     }

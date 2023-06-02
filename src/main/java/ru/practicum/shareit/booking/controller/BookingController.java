@@ -67,7 +67,7 @@ public class BookingController {
     }
 
     @ExceptionHandler(ConversionFailedException.class)
-    public ResponseEntity<Map<String, String>> wrongStateError(ConversionFailedException ex) {
+    public ResponseEntity<Map<String, String>> wrongStateError() {
         return new ResponseEntity<>(
                 Map.of("error", "Unknown state: UNSUPPORTED_STATUS"),
                 HttpStatus.BAD_REQUEST

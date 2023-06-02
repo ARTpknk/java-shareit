@@ -12,16 +12,16 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id", nullable = false)
-    int id;
+    @Column(name = "id", nullable = false)
+    private int id;
     @Column(name = "text", length=512, nullable=false)
-    String text;
+    private String text;
     @Column(name = "item_id")
-    Integer itemId;
+    private Integer itemId;
     @Column(name = "author_id")
-    Integer authorId;
+    private Integer authorId;
     @Column(name = "comment_created")
-    LocalDateTime created;
+    private LocalDateTime created;
 
     public Comment() {
     }

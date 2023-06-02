@@ -94,7 +94,7 @@ public class ItemServiceImpl implements ItemService {
         if (comment.getText().isBlank()) {
             throw new ShareItBadRequest("пустой комментарий");
         }
-        if (bookingRepository.confirmComment(comment.getItemId(), comment.getAuthorId(), LocalDateTime.now()).isEmpty()) {
+        if (bookingRepository.findUsedBookings(comment.getItemId(), comment.getAuthorId(), LocalDateTime.now()).isEmpty()) {
             throw new ShareItBadRequest("Вы не пользовались");
         }
         comment.setCreated(LocalDateTime.now());
