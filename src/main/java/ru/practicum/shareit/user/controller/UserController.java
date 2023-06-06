@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.classes.Create;
 import ru.practicum.shareit.classes.Update;
 import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
-import ru.practicum.shareit.user.dto.User;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserMapper;
+import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;
@@ -34,7 +34,8 @@ public class UserController {
     public UserDto update(@Validated(Update.class) @PathVariable("id") Integer id, @RequestBody UserDto userDto) {
         User user = UserMapper.toUser(userDto);
         log.info(String.format("UserController: update User request. Data: %s", user));
-        return UserMapper.toUserDto(userService.update(user.withId(id)));
+        user.setId(id);
+        return UserMapper.toUserDto(userService.update(user));
     }
 
     @GetMapping

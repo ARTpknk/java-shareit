@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exceptions.model.EmailAlreadyExistsException;
 import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
 import ru.practicum.shareit.exceptions.model.ShareItNotFoundException;
-import ru.practicum.shareit.user.dto.User;
+import ru.practicum.shareit.user.model.User;
 
 import java.util.*;
 
@@ -21,11 +21,11 @@ public class UserDtoStorageImpl implements UserStorage {
         if (emailSet.contains(user.getEmail())) {
             throw new EmailAlreadyExistsException("Email already exists");
         }
-        Integer id = getNextId();
-        User newUser = user.withId(id);
-        users.put(id, newUser);
         emailSet.add(user.getEmail());
-        return newUser;
+        Integer id = getNextId();
+        user.setId(id);
+        users.put(id, user);
+        return user;
     }
 
     public List<User> getAllUsers() {
@@ -78,7 +78,6 @@ public class UserDtoStorageImpl implements UserStorage {
             throw new ShareItNotFoundException(String.format("Пользователь с таким id: %d не найден.", user.getId()));
         }
     }
-
 
     public User getUser(int id) {
         return users.get(id);

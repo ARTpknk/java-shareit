@@ -32,7 +32,7 @@ public class Exceptions {
     public ErrorMessage internalServerError(EmptyOwnerFieldException ex, WebRequest request) {
 
         return new ErrorMessage(
-                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 new Date(),
                 ex.getMessage(),
                 request.getDescription(false));
