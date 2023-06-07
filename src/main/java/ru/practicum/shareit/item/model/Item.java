@@ -20,8 +20,19 @@ public class Item {
     private Boolean available;
     @Column(name = "owner_id", nullable = false)
     private int ownerId;
+    @Column(name = "request_id")
+    private Integer requestId;
 
     public Item() {
+    }
+
+    public Item(int id, String name, String description, Boolean available, int ownerId, int requestId) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.available = available;
+        this.ownerId = ownerId;
+        this.requestId = requestId;
     }
 
     public Item(int id, String name, String description, Boolean available, int ownerId) {

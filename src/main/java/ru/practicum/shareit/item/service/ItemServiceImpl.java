@@ -1,7 +1,9 @@
 package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
@@ -24,14 +26,19 @@ public class ItemServiceImpl implements ItemService {
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
 
+    @Transactional
     @Override
     public Item create(Item item, int ownerId) {
         if (userService.getUserById(ownerId) == null) {
             throw new OwnerNotFoundException("Owner not found");
         }
         item.setOwnerId(ownerId);
-        return repository.save(item);
+            return repository.save(item);
     }
+
+
+
+
 
     @Override
     public Item update(Item item, int ownerId) {
@@ -61,8 +68,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> getMyItems(int ownerId) {
-        return repository.findItemsByOwnerId(ownerId);
+    public List<Item> getMyItems(int ownerId, int size, int from) {
+        return repository.findByOwnerId(ownerId,  PageRequest.of(from,size)).toList();
     }
 
     @Override
@@ -75,8 +82,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> searchItems(String text) {
-        return repository.search(text);
+    public List<Item> searchItems(String text, int size, int from) {
+        return repository.search(text, PageRequest.of(from, size)).toList();
     }
 
     @Override

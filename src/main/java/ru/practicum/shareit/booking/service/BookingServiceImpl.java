@@ -11,10 +11,12 @@ import ru.practicum.shareit.exceptions.model.ShareItBadRequest;
 import ru.practicum.shareit.exceptions.model.ShareItNotFoundException;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
+import ru.practicum.shareit.request.Request;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -109,34 +111,35 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Booking> getMyBookings(int userId, State state) {
+    public List<Booking> getMyBookings(int userId, State state, int from, int size) {
         if (userService.getUserById(userId) == null) {
             throw new OwnerNotFoundException("Owner not found");
         }
         switch (state) {
             case ALL:
-                return repository.findBookingsByBookerIdOrderByStartDesc(userId).stream()
+                return repository.findMyBookings(userId, size, from).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case FUTURE:
-                return repository.findAllByBookerIdAndStartAfterOrderByStartDesc(userId, LocalDateTime.now()).stream()
+                return repository.findMyFutureBookings(userId, LocalDateTime.now(), size, from).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case PAST:
-                return repository.findAllByBookerIdAndEndBeforeOrderByStartDesc(userId, LocalDateTime.now()).stream()
+               return repository.findMyPastBookings(userId, LocalDateTime.now(), size, from).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case CURRENT:
-                return repository.findAllByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(userId,
-                                LocalDateTime.now(), LocalDateTime.now()).stream()
+                return repository.findMyCurrentBookings(userId,
+                                LocalDateTime.now(), size, from).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case WAITING:
-                return repository.findAllByBookerIdAndStatus(userId, BookingStatus.WAITING).stream()
+                System.out.println(from + size);
+                return repository.findMyWaitingBookings(userId, size, from).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case REJECTED:
-                return repository.findAllByBookerIdAndStatus(userId, BookingStatus.REJECTED).stream()
+                return repository.findMyRejectedBookings(userId, size, from).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             default:
@@ -145,34 +148,35 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Booking> getOwnerBookings(int userId, State state) {
+    public List<Booking> getOwnerBookings(int userId, State state, int from, int size) {
         if (userService.getUserById(userId) == null) {
             throw new OwnerNotFoundException("Owner not found");
         }
         switch (state) {
             case ALL:
-                return repository.findAllByOwnerId(userId).stream()
+                return repository.findAllByOwnerId(userId, from, size).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case FUTURE:
-                return repository.findAllByOwnerIdFuture(userId, LocalDateTime.now()).stream()
+                return repository.findAllByOwnerIdFuture(userId, LocalDateTime.now(), from, size).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case PAST:
-                return repository.findAllByOwnerIdPast(userId, LocalDateTime.now()).stream()
+                return repository.findAllByOwnerIdPast(userId, LocalDateTime.now(), from, size).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case CURRENT:
                 return repository.findAllByOwnerIdNow(userId,
-                                LocalDateTime.now()).stream()
+                                LocalDateTime.now(), from, size).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
+
             case WAITING:
-                return repository.findAllByOwnerIdWaiting(userId).stream()
+                return repository.findAllByOwnerIdWaiting(userId, from, size).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case REJECTED:
-                return repository.findAllByOwnerIdRejected(userId).stream()
+                return repository.findAllByOwnerIdRejected(userId, from, size).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             default:

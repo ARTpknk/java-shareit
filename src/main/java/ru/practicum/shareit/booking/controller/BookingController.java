@@ -15,7 +15,9 @@ import ru.practicum.shareit.booking.model.State;
 import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.classes.Create;
 import ru.practicum.shareit.classes.Update;
+import ru.practicum.shareit.exceptions.model.ShareItBadRequest;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -54,16 +56,35 @@ public class BookingController {
 
     @GetMapping
     public List<BookingDto> getMyBookings(@RequestHeader("X-Sharer-User-Id") int userId,
-                                          @RequestParam(required = false, defaultValue = "ALL") State state) {
-        return bookingService.getMyBookings(userId, state).stream().map(BookingMapper::toBookingDto)
-                .collect(Collectors.toList());
+                                          @RequestParam(required = false, defaultValue = "ALL") State state,
+                                          @RequestParam(required = false, defaultValue = "0") int from,
+                                          @RequestParam(required = false, defaultValue = "20") int size) {
+
+        System.out.println(from + size);
+        if(from<0 || size <= 0){
+            throw new ShareItBadRequest("некорректные значения");
+        }
+        else{
+            return bookingService.getMyBookings(userId, state, from, size)
+                    .stream().map(BookingMapper::toBookingDto)
+                    .collect(Collectors.toList());
+        }
     }
 
     @GetMapping("/owner")
     public List<BookingDto> getOwnerBookings(@RequestHeader("X-Sharer-User-Id") int ownerId,
-                                             @RequestParam(required = false, defaultValue = "ALL") State state) {
-        return bookingService.getOwnerBookings(ownerId, state).stream().map(BookingMapper::toBookingDto)
-                .collect(Collectors.toList());
+                                             @RequestParam(required = false, defaultValue = "ALL") State state,
+                                             @RequestParam(required = false, defaultValue = "0") int from,
+                                             @RequestParam(required = false, defaultValue = "20") int size) {
+
+        if(from<0 || size <= 0){
+            throw new ShareItBadRequest("некорректные значения");
+        }
+        else{
+            return bookingService.getOwnerBookings(ownerId, state, from, size)
+                    .stream().map(BookingMapper::toBookingDto)
+                    .collect(Collectors.toList());
+        }
     }
 
     @ExceptionHandler(ConversionFailedException.class)
