@@ -33,11 +33,8 @@ public class ItemServiceImpl implements ItemService {
             throw new OwnerNotFoundException("Owner not found");
         }
         item.setOwnerId(ownerId);
-            return repository.save(item);
+        return repository.save(item);
     }
-
-
-
 
 
     @Override
@@ -69,7 +66,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> getMyItems(int ownerId, int size, int from) {
-        return repository.findByOwnerId(ownerId,  PageRequest.of(from,size)).toList();
+        return repository.findByOwnerId(ownerId, PageRequest.of(from, size)).toList();
     }
 
     @Override
@@ -117,4 +114,12 @@ public class ItemServiceImpl implements ItemService {
     public String getUserName(int userId) {
         return userService.getUserById(userId).getName();
     }
+
+    @Override
+    public List<Item> getItemsByRequest(int requestId) {
+        return repository.findItemsByRequestId(requestId);
+
+    }
+
+
 }

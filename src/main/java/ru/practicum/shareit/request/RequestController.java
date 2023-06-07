@@ -11,6 +11,9 @@ import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.model.State;
 import ru.practicum.shareit.classes.Create;
 import ru.practicum.shareit.exceptions.model.ShareItBadRequest;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemMapper;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.request.dto.RequestDto;
 import ru.practicum.shareit.request.dto.RequestMapper;
@@ -45,35 +48,36 @@ public class RequestController {
     @GetMapping
     public List<RequestDto> getMyRequests(@RequestHeader("X-Sharer-User-Id") int userId) {
         return requestService.getMyRequests(userId).stream()
-                .map((Request request)-> (RequestMapper.toRequestDto(request, Collections.emptyList())))
+                .map((Request request)-> (RequestMapper.toRequestDto(request, itemService.getItemsByRequest(request.getId()).stream().map((Item item) -> (ItemMapper.toItemDto(item, request.getId())))
+                        .collect(Collectors.toList()))))
                 .collect(Collectors.toList());
-        //ЗАМЕНИТЬ ПУСТОЙ ЛИСТ НА ЛИСТ С ITEMS
     }
 
     @GetMapping("/all")
     public List<RequestDto> getUserRequests(@RequestHeader("X-Sharer-User-Id") int userId,
                                             @RequestParam(required = false, defaultValue = "0") int from,
-                                             @RequestParam(required = false, defaultValue = "1000000000") int size) {
-        //не понимаю как совместить запрет на size==0 и разрешение на defaultValue=0
-
-        if(from==0 && size == 1000000000){
-            return Collections.emptyList();
+                                            @RequestParam(required = false, defaultValue = "20") int size) {
+        if(from<0 || size<1){
+            throw new ShareItBadRequest("некорректные значения");
         }
 
-        if(from<0 || size <= 0){
-           throw new ShareItBadRequest("некорректные значения");
-        }
 
         return requestService.getUserRequests(userId, from, size).stream()
-                .map((Request request)-> (RequestMapper.toRequestDto(request, Collections.emptyList())))
+                .map((Request request)-> (RequestMapper.toRequestDto(request,
+                        itemService.getItemsByRequest(request.getId())
+                                .stream().map((Item item) -> (ItemMapper.toItemDto(item, request.getId())))
+                        .collect(Collectors.toList()))))
                 .collect(Collectors.toList());
-        //ЗАМЕНИТЬ ПУСТОЙ ЛИСТ НА ЛИСТ С ITEMS
     }
 
 
     @GetMapping("/{requestId}")
     public RequestDto getRequest(@RequestHeader("X-Sharer-User-Id") int userId, @PathVariable("requestId") Integer id) {
-        return RequestMapper.toRequestDto(requestService.getRequest(userId, id), Collections.emptyList());
+        Request request = requestService.getRequest(userId, id);
+        List <ItemDto> items = itemService.getItemsByRequest(request.getId())
+                .stream().map((Item item) -> (ItemMapper.toItemDto(item, request.getId())))
+                .collect(Collectors.toList());
+        return RequestMapper.toRequestDto(request, items);
         //ЗАМЕНИТЬ ПУСТОЙ ЛИСТ НА ЛИСТ С ITEMS
     }
 

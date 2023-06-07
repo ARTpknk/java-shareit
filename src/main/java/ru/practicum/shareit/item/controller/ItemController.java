@@ -6,6 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.classes.Create;
 import ru.practicum.shareit.classes.Update;
+import ru.practicum.shareit.exceptions.model.ShareItBadRequest;
 import ru.practicum.shareit.item.comment.Comment;
 import ru.practicum.shareit.item.comment.CommentDto;
 import ru.practicum.shareit.item.comment.CommentMapper;
@@ -65,8 +66,11 @@ public class ItemController {
 
     @GetMapping
     public List<ItemWithBookingsDto> findMyItems(@RequestHeader("X-Sharer-User-Id") int ownerId,
-                                                 @RequestParam(required = false, defaultValue = "0") @Min(0) int from,
-                                                 @RequestParam(required = false, defaultValue = "20") @Min(1) int size) {
+                                                 @RequestParam(required = false, defaultValue = "0") int from,
+                                                 @RequestParam(required = false, defaultValue = "20")  int size) {
+        if(from<0 || size<1){
+            throw new ShareItBadRequest("некорректные значения");
+        }
         return itemService.getMyItems(ownerId, size, from).stream()
                 .map((Item item) -> ItemMapper.toItemWithBookingsDto(item, itemService.getLastBooking(item.getId(), ownerId),
                         itemService.getNextBooking(item.getId(), ownerId), itemService.getComments(item.getId())
@@ -76,8 +80,11 @@ public class ItemController {
 
     @GetMapping("/search")
     public List<ItemDto> searchItems(@RequestParam String text,
-                                     @RequestParam(required = false, defaultValue = "0") @Min(0) int from,
-                                     @RequestParam(required = false, defaultValue = "20") @Min(1) int size) {
+                                     @RequestParam(required = false, defaultValue = "0")  int from,
+                                     @RequestParam(required = false, defaultValue = "20")  int size) {
+        if(from<0 || size<1){
+            throw new ShareItBadRequest("некорректные значения");
+        }
         if (text.isBlank()) {
             return Collections.emptyList();
         }

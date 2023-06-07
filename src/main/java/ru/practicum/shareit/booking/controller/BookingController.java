@@ -17,6 +17,7 @@ import ru.practicum.shareit.classes.Create;
 import ru.practicum.shareit.classes.Update;
 import ru.practicum.shareit.exceptions.model.ShareItBadRequest;
 
+import javax.validation.constraints.Min;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -58,17 +59,15 @@ public class BookingController {
     public List<BookingDto> getMyBookings(@RequestHeader("X-Sharer-User-Id") int userId,
                                           @RequestParam(required = false, defaultValue = "ALL") State state,
                                           @RequestParam(required = false, defaultValue = "0") int from,
-                                          @RequestParam(required = false, defaultValue = "20") int size) {
+                                          @RequestParam(required = false, defaultValue = "20")  int size) {
 
-        System.out.println(from + size);
-        if(from<0 || size <= 0){
+        if(from<0 || size<1){
             throw new ShareItBadRequest("некорректные значения");
         }
-        else{
-            return bookingService.getMyBookings(userId, state, from, size)
-                    .stream().map(BookingMapper::toBookingDto)
-                    .collect(Collectors.toList());
-        }
+        return bookingService.getMyBookings(userId, state, from, size)
+                .stream().map(BookingMapper::toBookingDto)
+                .collect(Collectors.toList());
+
     }
 
     @GetMapping("/owner")
@@ -76,15 +75,13 @@ public class BookingController {
                                              @RequestParam(required = false, defaultValue = "ALL") State state,
                                              @RequestParam(required = false, defaultValue = "0") int from,
                                              @RequestParam(required = false, defaultValue = "20") int size) {
-
-        if(from<0 || size <= 0){
+        if (from < 0 || size < 1) {
             throw new ShareItBadRequest("некорректные значения");
         }
-        else{
-            return bookingService.getOwnerBookings(ownerId, state, from, size)
-                    .stream().map(BookingMapper::toBookingDto)
-                    .collect(Collectors.toList());
-        }
+        return bookingService.getOwnerBookings(ownerId, state, from, size)
+                .stream().map(BookingMapper::toBookingDto)
+                .collect(Collectors.toList());
+
     }
 
     @ExceptionHandler(ConversionFailedException.class)

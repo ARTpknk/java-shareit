@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.With;
 import ru.practicum.shareit.classes.Create;
+import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 
 import javax.validation.constraints.NotBlank;
@@ -22,5 +23,5 @@ public class RequestDto {
     @NotBlank(groups = Create.class)
     private String description;
     private LocalDateTime created;
-    private List<Item> items;
+    private List<ItemDto> items;
 }

@@ -10,6 +10,8 @@ import java.util.List;
 @UtilityClass
 public class ItemMapper {
 
+
+
     public ItemDto toItemDto(Item item, Integer requestId) {
         return new ItemDto(item.getId(),
                 item.getName(),

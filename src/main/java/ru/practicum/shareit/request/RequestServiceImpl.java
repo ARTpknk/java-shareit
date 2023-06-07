@@ -40,12 +40,7 @@ public class RequestServiceImpl implements RequestService{
         if (userService.getUserById(userId) == null) {
             throw new OwnerNotFoundException("Owner not found");
         }
-        int limit = from + size;
-        List<Request> requests = repository.findUsersRequests(userId, limit);
-        for(int i = from; i>0; i--){
-            requests.remove(0);
-        }
-        return requests;
+        return repository.findUsersRequests(userId, size, from);
     }
 
     @Override

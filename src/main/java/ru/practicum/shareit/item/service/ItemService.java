@@ -27,4 +27,5 @@ public interface ItemService {
     List<Comment> getComments(int itemId);
 
     String getUserName(int userId);
+    List<Item> getItemsByRequest(int requestId);
 }
