@@ -17,7 +17,6 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.service.UserService;
 
-import javax.validation.constraints.Min;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,8 +66,8 @@ public class ItemController {
     @GetMapping
     public List<ItemWithBookingsDto> findMyItems(@RequestHeader("X-Sharer-User-Id") int ownerId,
                                                  @RequestParam(required = false, defaultValue = "0") int from,
-                                                 @RequestParam(required = false, defaultValue = "20")  int size) {
-        if(from<0 || size<1){
+                                                 @RequestParam(required = false, defaultValue = "20") int size) {
+        if (from < 0 || size < 1) {
             throw new ShareItBadRequest("некорректные значения");
         }
         return itemService.getMyItems(ownerId, size, from).stream()
@@ -80,9 +79,9 @@ public class ItemController {
 
     @GetMapping("/search")
     public List<ItemDto> searchItems(@RequestParam String text,
-                                     @RequestParam(required = false, defaultValue = "0")  int from,
-                                     @RequestParam(required = false, defaultValue = "20")  int size) {
-        if(from<0 || size<1){
+                                     @RequestParam(required = false, defaultValue = "0") int from,
+                                     @RequestParam(required = false, defaultValue = "20") int size) {
+        if (from < 0 || size < 1) {
             throw new ShareItBadRequest("некорректные значения");
         }
         if (text.isBlank()) {

@@ -1,14 +1,9 @@
-package ru.practicum.shareit.request;
+package ru.practicum.shareit.request.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.booking.dto.BookingDto;
-import ru.practicum.shareit.booking.dto.BookingMapper;
-import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.booking.model.BookingStatus;
-import ru.practicum.shareit.booking.model.State;
 import ru.practicum.shareit.classes.Create;
 import ru.practicum.shareit.exceptions.model.ShareItBadRequest;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -17,9 +12,9 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.request.dto.RequestDto;
 import ru.practicum.shareit.request.dto.RequestMapper;
+import ru.practicum.shareit.request.model.Request;
+import ru.practicum.shareit.request.service.RequestService;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +43,7 @@ public class RequestController {
     @GetMapping
     public List<RequestDto> getMyRequests(@RequestHeader("X-Sharer-User-Id") int userId) {
         return requestService.getMyRequests(userId).stream()
-                .map((Request request)-> (RequestMapper.toRequestDto(request, itemService.getItemsByRequest(request.getId()).stream().map((Item item) -> (ItemMapper.toItemDto(item, request.getId())))
+                .map((Request request) -> (RequestMapper.toRequestDto(request, itemService.getItemsByRequest(request.getId()).stream().map((Item item) -> (ItemMapper.toItemDto(item, request.getId())))
                         .collect(Collectors.toList()))))
                 .collect(Collectors.toList());
     }
@@ -57,37 +52,24 @@ public class RequestController {
     public List<RequestDto> getUserRequests(@RequestHeader("X-Sharer-User-Id") int userId,
                                             @RequestParam(required = false, defaultValue = "0") int from,
                                             @RequestParam(required = false, defaultValue = "20") int size) {
-        if(from<0 || size<1){
+        if (from < 0 || size < 1) {
             throw new ShareItBadRequest("некорректные значения");
         }
 
-
         return requestService.getUserRequests(userId, from, size).stream()
-                .map((Request request)-> (RequestMapper.toRequestDto(request,
+                .map((Request request) -> (RequestMapper.toRequestDto(request,
                         itemService.getItemsByRequest(request.getId())
                                 .stream().map((Item item) -> (ItemMapper.toItemDto(item, request.getId())))
-                        .collect(Collectors.toList()))))
+                                .collect(Collectors.toList()))))
                 .collect(Collectors.toList());
     }
-
 
     @GetMapping("/{requestId}")
     public RequestDto getRequest(@RequestHeader("X-Sharer-User-Id") int userId, @PathVariable("requestId") Integer id) {
         Request request = requestService.getRequest(userId, id);
-        List <ItemDto> items = itemService.getItemsByRequest(request.getId())
+        List<ItemDto> items = itemService.getItemsByRequest(request.getId())
                 .stream().map((Item item) -> (ItemMapper.toItemDto(item, request.getId())))
                 .collect(Collectors.toList());
         return RequestMapper.toRequestDto(request, items);
-        //ЗАМЕНИТЬ ПУСТОЙ ЛИСТ НА ЛИСТ С ITEMS
     }
-
-
-
-
-
-
-
-
-
-
 }

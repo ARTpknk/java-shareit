@@ -11,12 +11,10 @@ import ru.practicum.shareit.exceptions.model.ShareItBadRequest;
 import ru.practicum.shareit.exceptions.model.ShareItNotFoundException;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
-import ru.practicum.shareit.request.Request;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -125,7 +123,7 @@ public class BookingServiceImpl implements BookingService {
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case PAST:
-               return repository.findMyPastBookings(userId, LocalDateTime.now(), size, from).stream()
+                return repository.findMyPastBookings(userId, LocalDateTime.now(), size, from).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case CURRENT:

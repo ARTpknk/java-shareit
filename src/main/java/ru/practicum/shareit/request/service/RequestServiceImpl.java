@@ -1,22 +1,20 @@
-package ru.practicum.shareit.request;
+package ru.practicum.shareit.request.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
-import ru.practicum.shareit.item.service.ItemService;
+import ru.practicum.shareit.request.model.Request;
+import ru.practicum.shareit.request.repository.RequestRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class RequestServiceImpl implements RequestService{
+public class RequestServiceImpl implements RequestService {
     private final RequestRepository repository;
     private final UserService userService;
-    private final ItemService itemService;
 
     @Override
     public Request create(Request request, int requestorId) {
@@ -50,10 +48,8 @@ public class RequestServiceImpl implements RequestService{
         }
         if (repository.findById(requestId).isPresent()) {
             return repository.findById(requestId).get();
-        }
-        else{
+        } else {
             throw new OwnerNotFoundException("Request не найден");
         }
     }
-
 }

@@ -36,7 +36,6 @@ public class ItemServiceImpl implements ItemService {
         return repository.save(item);
     }
 
-
     @Override
     public Item update(Item item, int ownerId) {
         if (userService.getUserById(ownerId) == null) {
@@ -118,8 +117,5 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<Item> getItemsByRequest(int requestId) {
         return repository.findItemsByRequestId(requestId);
-
     }
-
-
 }
