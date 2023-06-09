@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "items")
+@Builder
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

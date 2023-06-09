@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
 import ru.practicum.shareit.exceptions.model.ShareItNotFoundException;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.storage.UserRepository;
+import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.util.List;
 

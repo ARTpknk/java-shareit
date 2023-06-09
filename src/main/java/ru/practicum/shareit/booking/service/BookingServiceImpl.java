@@ -29,11 +29,8 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Booking create(Booking booking, int bookerId) {
-        try {
-            if (booking.getStart() == null || booking.getEnd() == null) {
-                throw new ShareItBadRequest("time is null");
-            }
-        } catch (NullPointerException e) {
+
+        if (booking.getStart() == null || booking.getEnd() == null) {
             throw new ShareItBadRequest("time is null");
         }
         Item item = itemService.getItemById(booking.getItemId());
@@ -56,7 +53,6 @@ public class BookingServiceImpl implements BookingService {
         if (item.getOwnerId() == bookerId) {
             throw new OwnerNotFoundException("The same owner and booker");
         }
-
         booking.setBookerId(bookerId);
         booking.setItem(item);
         booking.setBooker(booker);
@@ -132,7 +128,6 @@ public class BookingServiceImpl implements BookingService {
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case WAITING:
-                System.out.println(from + size);
                 return repository.findMyWaitingBookings(userId, size, from).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
