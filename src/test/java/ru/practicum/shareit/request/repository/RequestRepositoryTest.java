@@ -55,7 +55,7 @@ public class RequestRepositoryTest {
                 .id(2)
                 .description("description2")
                 .requestorId(1)
-                .created(LocalDateTime.now())
+                .created(LocalDateTime.now().minusDays(1))
                 .build();
         User dbUser = userRepository.save(user);
         User dbUser2 = userRepository.save(user2);
