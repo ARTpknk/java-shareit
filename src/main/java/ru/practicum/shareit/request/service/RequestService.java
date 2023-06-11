@@ -9,7 +9,7 @@ public interface RequestService {
 
     List<Request> getMyRequests(int userId);
 
-    List<Request> getUserRequests(int userId, int from, int size);
+    List<Request> getRequests(int userId, int from, int size);
 
     Request getRequest(int userId, int requestId);
 }

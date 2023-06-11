@@ -5,8 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.practicum.shareit.booking.service.BookingService;
-import ru.practicum.shareit.item.comment.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.request.model.Request;
 import ru.practicum.shareit.request.service.RequestService;
@@ -27,39 +25,25 @@ import static org.hamcrest.Matchers.equalTo;
         webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class ItemServiceTest {
-
     @Autowired
     ItemService service;
-
     @Autowired
     UserService userService;
     @Autowired
     RequestService requestService;
 
-    @Autowired
-    BookingService bookingService;
-
-
     private Request request1;
     private Request request2;
-
-
     private Item item1;
     private Item item2;
     private User user;
-    private User user2;
-    private Comment comment;
-    int userId = 1;
-    int id1 = 1;
-    int id2 = 2;
-    int from = 0;
-    int size = 20;
-    String text = "veryGood";
-    LocalDateTime now = LocalDateTime.now();
+    private final int userId = 1;
+    private final int id1 = 1;
+    private final LocalDateTime now = LocalDateTime.now();
 
     @BeforeEach
     public void makeItemForTests() {
-
+        int id2 = 2;
 
         item1 = Item.builder()
                 .id(1)
@@ -85,19 +69,6 @@ public class ItemServiceTest {
                 .email("user@email.ru")
                 .build();
 
-        user2 = User.builder()
-                .id(2)
-                .name("user2")
-                .email("user2@email.ru")
-                .build();
-
-        comment = Comment.builder()
-                .id(1)
-                .text(text)
-                .itemId(id1)
-                .authorId(userId)
-                .build();
-
         request1 = Request.builder()
                 .id(id1)
                 .description("description1")
@@ -111,11 +82,13 @@ public class ItemServiceTest {
                 .requestorId(userId)
                 .created(now)
                 .build();
-
     }
 
     @Test
     void Test() {
+        int from = 0;
+        int size = 20;
+
         userService.create(user);
         requestService.create(request1, userId);
         requestService.create(request2, userId);
@@ -130,6 +103,7 @@ public class ItemServiceTest {
         List<Item> items = new ArrayList<>();
         items.add(item1);
         items.add(item2);
+
         List<Item> newItems = service.getMyItems(userId, size, from);
         assertThat(newItems, equalTo(items));
 
@@ -137,6 +111,7 @@ public class ItemServiceTest {
         assertThat(newItem3, equalTo(item1));
 
         items.remove(item1);
+        String text = "veryGood";
         List<Item> newItems2 = service.searchItems(text, size, from);
         assertThat(newItems2, equalTo(items));
 
@@ -146,6 +121,5 @@ public class ItemServiceTest {
 
         List<Item> newItems3 = service.getItemsByRequest(2);
         assertThat(newItems3, equalTo(items));
-
     }
 }

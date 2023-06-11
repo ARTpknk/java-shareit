@@ -54,9 +54,8 @@ public class RequestControllerTest {
     private Request request2;
     private RequestDto requestDto;
     private RequestDto requestDto2;
-    int from = 0;
-    int size = 20;
-    LocalDateTime now = LocalDateTime.now();
+    private final int size = 20;
+    private final LocalDateTime now = LocalDateTime.now();
 
     @BeforeEach
     void setUp(WebApplicationContext wac) {
@@ -129,10 +128,12 @@ public class RequestControllerTest {
 
     @Test
     void getUserRequestsTest() throws Exception {
+        int from = 0;
         List<Request> requests = new ArrayList<>();
         requests.add(request);
         requests.add(request2);
-        when(requestService.getUserRequests(1, from, size))
+
+        when(requestService.getRequests(1, from, size))
                 .thenReturn(requests);
 
         mvc.perform(get("/requests/all")

@@ -30,17 +30,13 @@ public class RequestServiceImplTest {
     @Mock
     RequestRepository repository;
 
-
     private Request request;
     private User user;
-    int userId = 1;
-    int wronguserId = 99;
-    int id = 1;
-    int wrongId = 99;
-    int from = 0;
-    int size = 20;
-    LocalDateTime now = LocalDateTime.now();
-
+    private final int userId = 1;
+    private final int id = 1;
+    private final int from = 0;
+    private final int size = 20;
+    private final LocalDateTime now = LocalDateTime.now();
 
     @BeforeEach
     public void makeItemForTests() {
@@ -57,7 +53,6 @@ public class RequestServiceImplTest {
                 .requestorId(userId)
                 .created(now)
                 .build();
-
     }
 
     @Test
@@ -115,7 +110,7 @@ public class RequestServiceImplTest {
         Mockito.when(userService.getUserById(userId)).thenReturn(null);
         assertThrows(
                 OwnerNotFoundException.class,
-                () -> requestService.getUserRequests(userId, size, from));
+                () -> requestService.getRequests(userId, size, from));
         Mockito.verify(userService, Mockito.times(1))
                 .getUserById(userId);
         Mockito.verifyNoMoreInteractions(userService);
@@ -126,13 +121,13 @@ public class RequestServiceImplTest {
         List<Request> requests = new ArrayList<>();
         requests.add(request);
         Mockito.when(userService.getUserById(userId)).thenReturn(user);
-        Mockito.when(repository.findUsersRequests(userId, size, from)).thenReturn(requests);
-        List<Request> newRequests = requestService.getUserRequests(userId, from, size);
+        Mockito.when(repository.findRequests(userId, size, from)).thenReturn(requests);
+        List<Request> newRequests = requestService.getRequests(userId, from, size);
         assertThat(newRequests.equals(requests)).isTrue();
         Mockito.verify(userService, Mockito.times(1))
                 .getUserById(userId);
         Mockito.verify(repository, Mockito.times(1))
-                .findUsersRequests(userId, size, from);
+                .findRequests(userId, size, from);
         Mockito.verifyNoMoreInteractions(userService, repository);
     }
 

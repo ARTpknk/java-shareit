@@ -32,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 public class UserControllerTest {
-
     @MockBean
     private UserService userService;
 
@@ -46,7 +45,6 @@ public class UserControllerTest {
 
     private UserDto userDto;
     private UserDto userDto2;
-
     private User user;
     private User user2;
 
@@ -80,7 +78,6 @@ public class UserControllerTest {
                 .email("user2@email.ru")
                 .build();
     }
-
 
     @Test
     void createTest() throws Exception {
@@ -162,7 +159,6 @@ public class UserControllerTest {
                 .andExpect(status().isOk());
     }
 
-
     @Test
     void deleteUnknownUserById() throws Exception {
         when(userService.getUserById(1))
@@ -174,8 +170,6 @@ public class UserControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
     }
-
-
 }
 
 

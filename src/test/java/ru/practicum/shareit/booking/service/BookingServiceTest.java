@@ -29,16 +29,12 @@ import static org.hamcrest.Matchers.equalTo;
         webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class BookingServiceTest {
-
     @Autowired
     ItemService itemService;
-
     @Autowired
     UserService userService;
-
     @Autowired
     BookingService service;
-
     @Autowired
     RequestService requestService;
 
@@ -50,20 +46,18 @@ public class BookingServiceTest {
     private User booker;
     private Booking booking;
     private Booking booking2;
-    int ownerId = 1;
-    int itemId1 = 1;
-    int itemId2 = 2;
+    private final int ownerId = 1;
 
-    int bookerId = 2;
-    int id = 1;
-    int from = 0;
-    int size = 20;
-    LocalDateTime now = LocalDateTime.now();
-    LocalDateTime start = now.plusDays(8);
-    LocalDateTime end = now.plusDays(10);
+    private final int bookerId = 2;
+    private final int id = 1;
+    private final LocalDateTime now = LocalDateTime.now();
+    private final LocalDateTime start = now.plusDays(8);
+    private final LocalDateTime end = now.plusDays(10);
 
     @BeforeEach
     public void makeBookingsForTests() {
+        int itemId1 = 1;
+        int itemId2 = 2;
 
         booking = Booking.builder()
                 .id(id)
@@ -134,6 +128,9 @@ public class BookingServiceTest {
 
     @Test
     void Test() {
+        int from = 0;
+        int size = 20;
+
         userService.create(owner);
         userService.create(booker);
         requestService.create(request, bookerId);
@@ -157,6 +154,7 @@ public class BookingServiceTest {
         service.create(booking2, ownerId);
         List<Booking> myBookings = new ArrayList<>();
         myBookings.add(booking2);
+
         List<Booking> newMyBookings = service.getMyBookings(1, State.ALL, from, size);
         assertThat(myBookings, equalTo(newMyBookings));
 
@@ -164,9 +162,5 @@ public class BookingServiceTest {
         ownerBookings.add(booking2);
         List<Booking> newOwnerBookings = service.getOwnerBookings(2, State.ALL, from, size);
         assertThat(ownerBookings, equalTo(newOwnerBookings));
-
-
     }
-
-
 }

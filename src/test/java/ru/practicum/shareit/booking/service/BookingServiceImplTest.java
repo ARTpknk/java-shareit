@@ -43,16 +43,16 @@ public class BookingServiceImplTest {
     private User owner;
     private User booker;
     private Booking booking;
-    int ownerId = 1;
-    int itemId = 1;
-    int bookerId = 2;
-    int wrongUserId = 99;
-    int id = 1;
-    int from = 0;
-    int size = 20;
-    LocalDateTime now = LocalDateTime.now();
-    LocalDateTime start = now.plusDays(8);
-    LocalDateTime end = now.plusDays(10);
+    private final int ownerId = 1;
+    private final int itemId = 1;
+    private final int bookerId = 2;
+    private final int wrongUserId = 99;
+    private final int id = 1;
+    private final int from = 0;
+    private final int size = 20;
+    private final LocalDateTime now = LocalDateTime.now();
+    private final LocalDateTime start = now.plusDays(8);
+    private final LocalDateTime end = now.plusDays(10);
 
     @BeforeEach
     public void makeBookingForTests() {

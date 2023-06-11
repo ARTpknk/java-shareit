@@ -10,8 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
 import ru.practicum.shareit.exceptions.model.ShareItNotFoundException;
 import ru.practicum.shareit.item.comment.Comment;
@@ -21,7 +19,6 @@ import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserServiceImpl;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 public class ItemServiceImplTest {
-
     @InjectMocks
     ItemServiceImpl itemService;
     @Mock
@@ -45,15 +41,13 @@ public class ItemServiceImplTest {
     private Item item;
     private User user;
     private Comment comment;
-    int userId = 1;
-    int wronguserId = 99;
-    int id = 1;
-    int wrongId = 99;
-    int from = 0;
-    int size = 20;
-    String text = "text";
-    LocalDateTime now = LocalDateTime.now();
-
+    private final int userId = 1;
+    private final int wrongUserId = 99;
+    private final int id = 1;
+    private final int wrongId = 99;
+    private final int from = 0;
+    private final int size = 20;
+    private final String text = "text";
 
     @BeforeEach
     public void makeItemForTests() {
@@ -95,12 +89,12 @@ public class ItemServiceImplTest {
 
     @Test
     void createItemWithoutUser() {
-        Mockito.when(userService.getUserById(wronguserId)).thenReturn(null);
+        Mockito.when(userService.getUserById(wrongUserId)).thenReturn(null);
         assertThrows(
                 OwnerNotFoundException.class,
-                () -> itemService.create(item, wronguserId));
+                () -> itemService.create(item, wrongUserId));
         Mockito.verify(userService, Mockito.times(1))
-                .getUserById(wronguserId);
+                .getUserById(wrongUserId);
         Mockito.verifyNoMoreInteractions(userService);
     }
 
@@ -123,12 +117,12 @@ public class ItemServiceImplTest {
 
     @Test
     void updateItemWithUnknownUserTest() {
-        Mockito.when(userService.getUserById(wronguserId)).thenReturn(null);
+        Mockito.when(userService.getUserById(wrongUserId)).thenReturn(null);
         assertThrows(
                 OwnerNotFoundException.class,
-                () -> itemService.update(item, wronguserId));
+                () -> itemService.update(item, wrongUserId));
         Mockito.verify(userService, Mockito.times(1))
-                .getUserById(wronguserId);
+                .getUserById(wrongUserId);
         Mockito.verifyNoMoreInteractions(userService);
     }
 

@@ -17,8 +17,6 @@ import ru.practicum.shareit.item.comment.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
-import ru.practicum.shareit.request.controller.RequestController;
-import ru.practicum.shareit.request.service.RequestService;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
@@ -40,7 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 public class ItemControllerTest {
-
     @MockBean
     private ItemService itemService;
     @MockBean
@@ -60,18 +57,16 @@ public class ItemControllerTest {
     private User user;
     private Comment comment;
     private CommentDto commentDto;
-    int userId = 1;
-    int wronguserId = 99;
-    int id = 1;
-    int wrongId = 99;
-    int from = 0;
-    int size = 20;
+    private final int from = 0;
+    private final int size = 20;
     String text = "item";
     LocalDateTime now = LocalDateTime.now();
 
-
     @BeforeEach
     public void makeItemForTests() {
+        int userId = 1;
+        int id = 1;
+
         item = Item.builder()
                 .id(1)
                 .name("item")
@@ -96,7 +91,6 @@ public class ItemControllerTest {
                 .available(true)
                 .requestId(1)
                 .build();
-
 
         item2 = Item.builder()
                 .id(2)
@@ -265,7 +259,7 @@ public class ItemControllerTest {
     @Test
     void searchItemsNoTextTest() throws Exception {
         mvc.perform(get("/items/search", 1)
-                        .param("text", String.valueOf(""))
+                        .param("text", "")
                         .content(objectMapper.writeValueAsString(itemDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
@@ -314,7 +308,6 @@ public class ItemControllerTest {
                 .andExpect(jsonPath("$.id", is(commentDto.getId()), Integer.class))
                 .andExpect(jsonPath("$.text").value(commentDto.getText()));
     }
-
 
 
 }

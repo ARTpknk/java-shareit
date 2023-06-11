@@ -24,15 +24,14 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTest {
-
     @InjectMocks
     UserServiceImpl userService;
     @Mock
     UserRepository repository;
 
     private User user;
-    int id = 1;
-    int wrongId = 99;
+    private final int id = 1;
+    private final int wrongId = 99;
 
     @BeforeEach
     public void makeUserForTests() {

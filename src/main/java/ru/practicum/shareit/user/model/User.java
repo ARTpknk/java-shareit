@@ -1,6 +1,5 @@
 package ru.practicum.shareit.user.model;
 
-import jdk.jshell.Snippet;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,7 +10,7 @@ import javax.persistence.*;
 @Table(name = "users")
 @Data
 @Builder
-public class User { //для Базы Данных
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

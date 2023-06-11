@@ -21,14 +21,12 @@ import static org.hamcrest.Matchers.equalTo;
         webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserServiceTest {
-
     @Autowired
     UserService service;
-
-    User user1;
-    User user2;
-    int id1 = 1;
-    int id2 = 2;
+    private User user1;
+    private User user2;
+    private final int id1 = 1;
+    private final int id2 = 2;
 
     @BeforeEach
     public void makeUserForTests() {

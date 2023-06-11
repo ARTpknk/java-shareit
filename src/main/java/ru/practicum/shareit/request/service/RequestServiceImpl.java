@@ -34,11 +34,11 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<Request> getUserRequests(int userId, int from, int size) {
+    public List<Request> getRequests(int userId, int from, int size) {
         if (userService.getUserById(userId) == null) {
             throw new OwnerNotFoundException("Owner not found");
         }
-        return repository.findUsersRequests(userId, size, from);
+        return repository.findRequests(userId, size, from);
     }
 
     @Override

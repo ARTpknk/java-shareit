@@ -49,14 +49,14 @@ public class RequestController {
     }
 
     @GetMapping("/all")
-    public List<RequestDto> getUserRequests(@RequestHeader("X-Sharer-User-Id") int userId,
-                                            @RequestParam(required = false, defaultValue = "0") int from,
-                                            @RequestParam(required = false, defaultValue = "20") int size) {
+    public List<RequestDto> getRequests(@RequestHeader("X-Sharer-User-Id") int userId,
+                                        @RequestParam(required = false, defaultValue = "0") int from,
+                                        @RequestParam(required = false, defaultValue = "20") int size) {
         if (from < 0 || size < 1) {
             throw new ShareItBadRequest("некорректные значения");
         }
 
-        return requestService.getUserRequests(userId, from, size).stream()
+        return requestService.getRequests(userId, from, size).stream()
                 .map((Request request) -> (RequestMapper.toRequestDto(request,
                         itemService.getItemsByRequest(request.getId())
                                 .stream().map((Item item) -> (ItemMapper.toItemDto(item, request.getId())))
