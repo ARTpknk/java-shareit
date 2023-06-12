@@ -133,7 +133,7 @@ public class RequestControllerTest {
         requests.add(request);
         requests.add(request2);
 
-        when(requestService.getRequests(1, from, size))
+        when(requestService.getByUserIdAndRequestId(1, from, size))
                 .thenReturn(requests);
 
         mvc.perform(get("/requests/all")

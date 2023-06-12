@@ -56,7 +56,7 @@ public class RequestController {
             throw new ShareItBadRequest("некорректные значения");
         }
 
-        return requestService.getRequests(userId, from, size).stream()
+        return requestService.getByUserIdAndRequestId(userId, from, size).stream()
                 .map((Request request) -> (RequestMapper.toRequestDto(request,
                         itemService.getItemsByRequest(request.getId())
                                 .stream().map((Item item) -> (ItemMapper.toItemDto(item, request.getId())))

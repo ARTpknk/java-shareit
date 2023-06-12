@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
         if (repository.findById(id).isPresent()) {
             return repository.findById(id).get();
         } else {
-            throw new OwnerNotFoundException("пользователь не найден");
+            throw new OwnerNotFoundException("User with Id: " + id + " not found");
         }
     }
 

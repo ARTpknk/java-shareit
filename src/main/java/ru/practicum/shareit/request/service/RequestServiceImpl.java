@@ -20,7 +20,7 @@ public class RequestServiceImpl implements RequestService {
     public Request create(Request request, int requestorId) {
         User requestor = userService.getUserById(requestorId);
         if (requestor == null) {
-            throw new OwnerNotFoundException("Owner not found");
+            throw new OwnerNotFoundException("Requestor with Id: " + requestorId + " not found");
         }
         return repository.save(request);
     }
@@ -28,15 +28,15 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public List<Request> getMyRequests(int userId) {
         if (userService.getUserById(userId) == null) {
-            throw new OwnerNotFoundException("Owner not found");
+            throw new OwnerNotFoundException("Requestor with Id: " + userId + " not found");
         }
         return repository.findAllByRequestorIdOrderByCreatedDesc(userId);
     }
 
     @Override
-    public List<Request> getRequests(int userId, int from, int size) {
+    public List<Request> getByUserIdAndRequestId(int userId, int from, int size) {
         if (userService.getUserById(userId) == null) {
-            throw new OwnerNotFoundException("Owner not found");
+            throw new OwnerNotFoundException("Requestor with Id: " + userId + " not found");
         }
         return repository.findRequests(userId, size, from);
     }
@@ -44,12 +44,12 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public Request getRequest(int userId, int requestId) {
         if (userService.getUserById(userId) == null) {
-            throw new OwnerNotFoundException("Owner not found");
+            throw new OwnerNotFoundException("Requestor with Id: " + userId + " not found");
         }
         if (repository.findById(requestId).isPresent()) {
             return repository.findById(requestId).get();
         } else {
-            throw new OwnerNotFoundException("Request не найден");
+            throw new OwnerNotFoundException("Requestor with Id: " + userId + " not found");
         }
     }
 }

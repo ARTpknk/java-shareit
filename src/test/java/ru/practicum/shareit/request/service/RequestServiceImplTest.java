@@ -110,7 +110,7 @@ public class RequestServiceImplTest {
         Mockito.when(userService.getUserById(userId)).thenReturn(null);
         assertThrows(
                 OwnerNotFoundException.class,
-                () -> requestService.getRequests(userId, size, from));
+                () -> requestService.getByUserIdAndRequestId(userId, size, from));
         Mockito.verify(userService, Mockito.times(1))
                 .getUserById(userId);
         Mockito.verifyNoMoreInteractions(userService);
@@ -122,7 +122,7 @@ public class RequestServiceImplTest {
         requests.add(request);
         Mockito.when(userService.getUserById(userId)).thenReturn(user);
         Mockito.when(repository.findRequests(userId, size, from)).thenReturn(requests);
-        List<Request> newRequests = requestService.getRequests(userId, from, size);
+        List<Request> newRequests = requestService.getByUserIdAndRequestId(userId, from, size);
         assertThat(newRequests.equals(requests)).isTrue();
         Mockito.verify(userService, Mockito.times(1))
                 .getUserById(userId);
@@ -157,7 +157,7 @@ public class RequestServiceImplTest {
     }
 
     @Test
-    void getRequestTest() {
+    void getByUserIdAndReuestIdTest() {
         Mockito.when(userService.getUserById(userId)).thenReturn(user);
         Mockito.when(repository.findById(id)).thenReturn(Optional.ofNullable(request));
         Request newRequest = requestService.getRequest(userId, id);

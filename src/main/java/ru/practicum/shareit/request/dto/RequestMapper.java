@@ -10,10 +10,20 @@ import java.util.List;
 public class RequestMapper {
 
     public RequestDto toRequestDto(Request request, List<ItemDto> items) {
-        return new RequestDto(request.getId(), request.getDescription(), request.getCreated(), items);
+        return RequestDto.builder()
+                .id(request.getId())
+                .description(request.getDescription())
+                .created(request.getCreated())
+                .items(items)
+                .build();
     }
 
     public Request toRequest(RequestDto requestDto, int requestorId) {
-        return new Request(requestDto.getId(), requestDto.getDescription(), requestorId, requestDto.getCreated());
+        return Request.builder()
+                .id(requestDto.getId())
+                .description(requestDto.getDescription())
+                .requestorId(requestorId)
+                .created(requestDto.getCreated())
+                .build();
     }
 }

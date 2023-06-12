@@ -30,7 +30,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Item create(Item item, int ownerId) {
         if (userService.getUserById(ownerId) == null) {
-            throw new OwnerNotFoundException("Owner not found");
+            throw new OwnerNotFoundException("Owner with Id: " + ownerId + " not found");
         }
         item.setOwnerId(ownerId);
         return repository.save(item);
@@ -39,7 +39,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Item update(Item item, int ownerId) {
         if (userService.getUserById(ownerId) == null) {
-            throw new OwnerNotFoundException("Owner not found");
+            throw new OwnerNotFoundException("Owner with Id: " + ownerId + " not found");
         }
         int id = item.getId();
         if (repository.findById(id).isPresent()) {
@@ -73,7 +73,7 @@ public class ItemServiceImpl implements ItemService {
         if (repository.findById(id).isPresent()) {
             return repository.findById(id).get();
         } else {
-            throw new OwnerNotFoundException("вещь не найдена");
+            throw new OwnerNotFoundException(String.format("Вещь с таким id: %d не найдена.", id));
         }
     }
 

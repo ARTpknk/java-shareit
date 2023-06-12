@@ -36,22 +36,22 @@ public class BookingServiceImpl implements BookingService {
         Item item = itemService.getItemById(booking.getItemId());
         User booker = userService.getUserById(bookerId);
         if (booker == null) {
-            throw new OwnerNotFoundException("Owner not found");
+            throw new OwnerNotFoundException("Booker with Id " + bookerId + " not found");
         }
         if (item == null) {
-            throw new OwnerNotFoundException("Item not found");
+            throw new OwnerNotFoundException("Item with Id " + booking.getItemId() + " not found");
         }
         if (!item.getAvailable()) {
-            throw new ShareItBadRequest("item is not available");
+            throw new ShareItBadRequest("Item with Id " + booking.getItemId() + " is not available");
         }
         if (booking.getStart().isAfter(booking.getEnd()) || booking.getStart().equals(booking.getEnd())) {
-            throw new ShareItBadRequest("start is after end");
+            throw new ShareItBadRequest("start: " + booking.getStart() + " is after end: " + booking.getEnd());
         }
         if (booking.getEnd().isBefore(LocalDateTime.now()) || booking.getStart().isBefore(LocalDateTime.now())) {
             throw new ShareItBadRequest("time is in the past");
         }
         if (item.getOwnerId() == bookerId) {
-            throw new OwnerNotFoundException("The same owner and booker");
+            throw new OwnerNotFoundException("The same owner and booker with Id " + bookerId);
         }
         booking.setBookerId(bookerId);
         booking.setItem(item);
@@ -76,9 +76,9 @@ public class BookingServiceImpl implements BookingService {
                     booking.setBooker(userService.getUserById(booking.getBookerId()));
                     return booking;
                 } else if (ownerId == booking.getBookerId()) {
-                    throw new OwnerNotFoundException("неверный ownerId");
+                    throw new OwnerNotFoundException("OwnerId: " + ownerId + " совпадает с bookerId");
                 } else {
-                    throw new ShareItNotFoundException("неверный ownerId");
+                    throw new ShareItNotFoundException("неверный ownerId: " + ownerId);
                 }
             } else {
                 throw new ShareItBadRequest("уже получен ответ");
@@ -97,17 +97,17 @@ public class BookingServiceImpl implements BookingService {
             if (userId == booking.getBookerId() || userId == item.getOwnerId()) {
                 return booking;
             } else {
-                throw new OwnerNotFoundException("Это не ваша вещь");
+                throw new OwnerNotFoundException("Это не ваша вещь: " + item);
             }
         } else {
-            throw new OwnerNotFoundException("Booking не найден");
+            throw new OwnerNotFoundException("Booking с Id: " + id + " не найден");
         }
     }
 
     @Override
     public List<Booking> getMyBookings(int userId, State state, int from, int size) {
         if (userService.getUserById(userId) == null) {
-            throw new OwnerNotFoundException("Owner not found");
+            throw new OwnerNotFoundException("Owner with Id " + userId + " not found");
         }
         switch (state) {
             case ALL:
@@ -143,7 +143,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<Booking> getOwnerBookings(int userId, State state, int from, int size) {
         if (userService.getUserById(userId) == null) {
-            throw new OwnerNotFoundException("Owner not found");
+            throw new OwnerNotFoundException("Owner with Id " + userId + " not found");
         }
         switch (state) {
             case ALL:
