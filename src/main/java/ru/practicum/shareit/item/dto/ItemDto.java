@@ -19,4 +19,23 @@ public class ItemDto {
     private String description;
     @NotNull(groups = Create.class)
     private Boolean available;
+    private Integer requestId;
+
+    public ItemDto() {
+    }
+
+    public ItemDto(int id, String name, String description, Boolean available) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.available = available;
+    }
+
+    public ItemDto(int id, String name, String description, Boolean available, Integer requestId) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.available = available;
+        this.requestId = requestId;
+    }
 }

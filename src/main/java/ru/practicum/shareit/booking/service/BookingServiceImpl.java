@@ -29,34 +29,30 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Booking create(Booking booking, int bookerId) {
-        try {
-            if (booking.getStart() == null || booking.getEnd() == null) {
-                throw new ShareItBadRequest("time is null");
-            }
-        } catch (NullPointerException e) {
+
+        if (booking.getStart() == null || booking.getEnd() == null) {
             throw new ShareItBadRequest("time is null");
         }
         Item item = itemService.getItemById(booking.getItemId());
         User booker = userService.getUserById(bookerId);
         if (booker == null) {
-            throw new OwnerNotFoundException("Owner not found");
+            throw new OwnerNotFoundException("Booker with Id " + bookerId + " not found");
         }
         if (item == null) {
-            throw new OwnerNotFoundException("Item not found");
+            throw new OwnerNotFoundException("Item with Id " + booking.getItemId() + " not found");
         }
         if (!item.getAvailable()) {
-            throw new ShareItBadRequest("item is not available");
+            throw new ShareItBadRequest("Item with Id " + booking.getItemId() + " is not available");
         }
         if (booking.getStart().isAfter(booking.getEnd()) || booking.getStart().equals(booking.getEnd())) {
-            throw new ShareItBadRequest("start is after end");
+            throw new ShareItBadRequest("start: " + booking.getStart() + " is after end: " + booking.getEnd());
         }
         if (booking.getEnd().isBefore(LocalDateTime.now()) || booking.getStart().isBefore(LocalDateTime.now())) {
             throw new ShareItBadRequest("time is in the past");
         }
         if (item.getOwnerId() == bookerId) {
-            throw new OwnerNotFoundException("The same owner and booker");
+            throw new OwnerNotFoundException("The same owner and booker with Id " + bookerId);
         }
-
         booking.setBookerId(bookerId);
         booking.setItem(item);
         booking.setBooker(booker);
@@ -80,9 +76,9 @@ public class BookingServiceImpl implements BookingService {
                     booking.setBooker(userService.getUserById(booking.getBookerId()));
                     return booking;
                 } else if (ownerId == booking.getBookerId()) {
-                    throw new OwnerNotFoundException("неверный ownerId");
+                    throw new OwnerNotFoundException("OwnerId: " + ownerId + " совпадает с bookerId");
                 } else {
-                    throw new ShareItNotFoundException("неверный ownerId");
+                    throw new ShareItNotFoundException("неверный ownerId: " + ownerId);
                 }
             } else {
                 throw new ShareItBadRequest("уже получен ответ");
@@ -101,42 +97,42 @@ public class BookingServiceImpl implements BookingService {
             if (userId == booking.getBookerId() || userId == item.getOwnerId()) {
                 return booking;
             } else {
-                throw new OwnerNotFoundException("Это не ваша вещь");
+                throw new OwnerNotFoundException("Это не ваша вещь: " + item);
             }
         } else {
-            throw new OwnerNotFoundException("Booking не найден");
+            throw new OwnerNotFoundException("Booking с Id: " + id + " не найден");
         }
     }
 
     @Override
-    public List<Booking> getMyBookings(int userId, State state) {
+    public List<Booking> getMyBookings(int userId, State state, int from, int size) {
         if (userService.getUserById(userId) == null) {
-            throw new OwnerNotFoundException("Owner not found");
+            throw new OwnerNotFoundException("Owner with Id " + userId + " not found");
         }
         switch (state) {
             case ALL:
-                return repository.findBookingsByBookerIdOrderByStartDesc(userId).stream()
+                return repository.findMyBookings(userId, size, from).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case FUTURE:
-                return repository.findAllByBookerIdAndStartAfterOrderByStartDesc(userId, LocalDateTime.now()).stream()
+                return repository.findMyFutureBookings(userId, LocalDateTime.now(), size, from).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case PAST:
-                return repository.findAllByBookerIdAndEndBeforeOrderByStartDesc(userId, LocalDateTime.now()).stream()
+                return repository.findMyPastBookings(userId, LocalDateTime.now(), size, from).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case CURRENT:
-                return repository.findAllByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(userId,
-                                LocalDateTime.now(), LocalDateTime.now()).stream()
+                return repository.findMyCurrentBookings(userId,
+                                LocalDateTime.now(), size, from).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case WAITING:
-                return repository.findAllByBookerIdAndStatus(userId, BookingStatus.WAITING).stream()
+                return repository.findMyWaitingBookings(userId, size, from).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case REJECTED:
-                return repository.findAllByBookerIdAndStatus(userId, BookingStatus.REJECTED).stream()
+                return repository.findMyRejectedBookings(userId, size, from).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             default:
@@ -145,34 +141,35 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Booking> getOwnerBookings(int userId, State state) {
+    public List<Booking> getOwnerBookings(int userId, State state, int from, int size) {
         if (userService.getUserById(userId) == null) {
-            throw new OwnerNotFoundException("Owner not found");
+            throw new OwnerNotFoundException("Owner with Id " + userId + " not found");
         }
         switch (state) {
             case ALL:
-                return repository.findAllByOwnerId(userId).stream()
+                return repository.findAllByOwnerId(userId, from, size).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case FUTURE:
-                return repository.findAllByOwnerIdFuture(userId, LocalDateTime.now()).stream()
+                return repository.findAllByOwnerIdFuture(userId, LocalDateTime.now(), from, size).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case PAST:
-                return repository.findAllByOwnerIdPast(userId, LocalDateTime.now()).stream()
+                return repository.findAllByOwnerIdPast(userId, LocalDateTime.now(), from, size).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case CURRENT:
                 return repository.findAllByOwnerIdNow(userId,
-                                LocalDateTime.now()).stream()
+                                LocalDateTime.now(), from, size).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
+
             case WAITING:
-                return repository.findAllByOwnerIdWaiting(userId).stream()
+                return repository.findAllByOwnerIdWaiting(userId, from, size).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             case REJECTED:
-                return repository.findAllByOwnerIdRejected(userId).stream()
+                return repository.findAllByOwnerIdRejected(userId, from, size).stream()
                         .map(this::setItem).map(this::setBooker)
                         .collect(Collectors.toList());
             default:

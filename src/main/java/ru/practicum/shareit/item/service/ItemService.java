@@ -12,11 +12,11 @@ public interface ItemService {
 
     Item update(Item item, int ownerId);
 
-    List<Item> getMyItems(int ownerId);
+    List<Item> getMyItems(int ownerId, int size, int from);
 
     Item getItemById(Integer id);
 
-    List<Item> searchItems(String text);
+    List<Item> searchItems(String text, int size, int from);
 
     Booking getLastBooking(int itemId, int userId);
 
@@ -27,4 +27,6 @@ public interface ItemService {
     List<Comment> getComments(int itemId);
 
     String getUserName(int userId);
+
+    List<Item> getItemsByRequest(int requestId);
 }

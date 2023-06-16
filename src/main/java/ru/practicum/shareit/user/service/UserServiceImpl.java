@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
 import ru.practicum.shareit.exceptions.model.ShareItNotFoundException;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.storage.UserRepository;
+import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
         if (repository.findById(id).isPresent()) {
             return repository.findById(id).get();
         } else {
-            throw new OwnerNotFoundException("пользователь не найден");
+            throw new OwnerNotFoundException("User with Id: " + id + " not found");
         }
     }
 

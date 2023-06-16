@@ -1,7 +1,9 @@
 package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
@@ -10,7 +12,7 @@ import ru.practicum.shareit.exceptions.model.ShareItNotFoundException;
 import ru.practicum.shareit.item.comment.Comment;
 import ru.practicum.shareit.item.comment.CommentRepository;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.storage.ItemRepository;
+import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.time.LocalDateTime;
@@ -24,10 +26,11 @@ public class ItemServiceImpl implements ItemService {
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
 
+    @Transactional
     @Override
     public Item create(Item item, int ownerId) {
         if (userService.getUserById(ownerId) == null) {
-            throw new OwnerNotFoundException("Owner not found");
+            throw new OwnerNotFoundException("Owner with Id: " + ownerId + " not found");
         }
         item.setOwnerId(ownerId);
         return repository.save(item);
@@ -36,7 +39,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Item update(Item item, int ownerId) {
         if (userService.getUserById(ownerId) == null) {
-            throw new OwnerNotFoundException("Owner not found");
+            throw new OwnerNotFoundException("Owner with Id: " + ownerId + " not found");
         }
         int id = item.getId();
         if (repository.findById(id).isPresent()) {
@@ -61,8 +64,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> getMyItems(int ownerId) {
-        return repository.findItemsByOwnerId(ownerId);
+    public List<Item> getMyItems(int ownerId, int size, int from) {
+        return repository.findByOwnerId(ownerId, PageRequest.of(from, size)).toList();
     }
 
     @Override
@@ -70,13 +73,13 @@ public class ItemServiceImpl implements ItemService {
         if (repository.findById(id).isPresent()) {
             return repository.findById(id).get();
         } else {
-            throw new OwnerNotFoundException("вещь не найдена");
+            throw new OwnerNotFoundException(String.format("Вещь с таким id: %d не найдена.", id));
         }
     }
 
     @Override
-    public List<Item> searchItems(String text) {
-        return repository.search(text);
+    public List<Item> searchItems(String text, int size, int from) {
+        return repository.search(text, PageRequest.of(from, size)).toList();
     }
 
     @Override
@@ -109,5 +112,10 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public String getUserName(int userId) {
         return userService.getUserById(userId).getName();
+    }
+
+    @Override
+    public List<Item> getItemsByRequest(int requestId) {
+        return repository.findItemsByRequestId(requestId);
     }
 }

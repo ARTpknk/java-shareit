@@ -51,7 +51,7 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public void deleteUserById(@PathVariable("userId") Integer userId) {
         if (userService.getUserById(userId) == null) {
-            throw new OwnerNotFoundException("Owner not found");
+            throw new OwnerNotFoundException("User with Id: " + userId + " not found");
         }
         userService.deleteUserById(userId);
         log.info(String.format("UserController: Remove user with id: %d.", userId));

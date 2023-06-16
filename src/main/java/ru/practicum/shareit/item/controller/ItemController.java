@@ -6,6 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.classes.Create;
 import ru.practicum.shareit.classes.Update;
+import ru.practicum.shareit.exceptions.model.ShareItBadRequest;
 import ru.practicum.shareit.item.comment.Comment;
 import ru.practicum.shareit.item.comment.CommentDto;
 import ru.practicum.shareit.item.comment.CommentMapper;
@@ -31,9 +32,16 @@ public class ItemController {
 
     @PostMapping
     public ItemDto create(@Validated(Create.class) @RequestBody ItemDto itemDto, @RequestHeader("X-Sharer-User-Id") int ownerId) {
-        Item item = ItemMapper.toItem(itemDto, ownerId);
-        log.info(String.format("ItemController: create Item request. Data: %s", item));
-        return ItemMapper.toItemDto(itemService.create(item, ownerId));
+        Item item;
+        if (itemDto.getRequestId() == null) {
+            item = ItemMapper.toItem(itemDto, ownerId);
+            log.info(String.format("ItemController: create Item request. Data: %s", item));
+            return ItemMapper.toItemDto(itemService.create(item, ownerId));
+        } else {
+            item = ItemMapper.toItem(itemDto, ownerId, itemDto.getRequestId());
+            log.info(String.format("ItemController: create Item request. Data: %s", item));
+            return ItemMapper.toItemDto(itemService.create(item, ownerId), item.getRequestId());
+        }
     }
 
     @PatchMapping("/{id}")
@@ -56,8 +64,13 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemWithBookingsDto> findMyItems(@RequestHeader("X-Sharer-User-Id") int ownerId) {
-        return itemService.getMyItems(ownerId).stream()
+    public List<ItemWithBookingsDto> findMyItems(@RequestHeader("X-Sharer-User-Id") int ownerId,
+                                                 @RequestParam(required = false, defaultValue = "0") int from,
+                                                 @RequestParam(required = false, defaultValue = "20") int size) {
+        if (from < 0 || size < 1) {
+            throw new ShareItBadRequest("некорректные значения");
+        }
+        return itemService.getMyItems(ownerId, size, from).stream()
                 .map((Item item) -> ItemMapper.toItemWithBookingsDto(item, itemService.getLastBooking(item.getId(), ownerId),
                         itemService.getNextBooking(item.getId(), ownerId), itemService.getComments(item.getId())
                                 .stream().map((Comment comment) -> (CommentMapper.toCommentDto(comment, itemService.getUserName(comment.getAuthorId())))).collect(Collectors.toList())))
@@ -65,11 +78,16 @@ public class ItemController {
     }
 
     @GetMapping("/search")
-    public List<ItemDto> searchItems(@RequestParam String text) {
+    public List<ItemDto> searchItems(@RequestParam String text,
+                                     @RequestParam(required = false, defaultValue = "0") int from,
+                                     @RequestParam(required = false, defaultValue = "20") int size) {
+        if (from < 0 || size < 1) {
+            throw new ShareItBadRequest("некорректные значения");
+        }
         if (text.isBlank()) {
             return Collections.emptyList();
         }
-        return itemService.searchItems(text).stream()
+        return itemService.searchItems(text, size, from).stream()
                 .map(ItemMapper::toItemDto).collect(Collectors.toList());
     }
 
