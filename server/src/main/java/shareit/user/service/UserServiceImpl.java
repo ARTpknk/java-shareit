@@ -3,7 +3,6 @@ package shareit.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import shareit.exceptions.model.OwnerNotFoundException;
-import shareit.exceptions.model.ShareItBadRequest;
 import shareit.exceptions.model.ShareItNotFoundException;
 import shareit.user.model.User;
 import shareit.user.repository.UserRepository;
