@@ -52,27 +52,11 @@ public class ItemServiceImplTest {
 
     @BeforeEach
     public void makeItemForTests() {
-        item = Item.builder()
-                .id(1)
-                .name("item")
-                .description("good")
-                .available(true)
-                .ownerId(userId)
-                .requestId(1)
-                .build();
+        item = Item.builder().id(1).name("item").description("good").available(true).ownerId(userId).requestId(1).build();
 
-        user = User.builder()
-                .id(userId)
-                .name("user")
-                .email("user@email.ru")
-                .build();
+        user = User.builder().id(userId).name("user").email("user@email.ru").build();
 
-        comment = Comment.builder()
-                .id(1)
-                .text(text)
-                .itemId(id)
-                .authorId(userId)
-                .build();
+        comment = Comment.builder().id(1).text(text).itemId(id).authorId(userId).build();
     }
 
     @Test
@@ -81,21 +65,16 @@ public class ItemServiceImplTest {
         Mockito.when(userService.getUserById(userId)).thenReturn(user);
         Item newItem = itemService.create(item, userId);
         assertThat(newItem.equals(item)).isTrue();
-        Mockito.verify(userService, Mockito.times(1))
-                .getUserById(userId);
-        Mockito.verify(repository, Mockito.times(1))
-                .save(item);
+        Mockito.verify(userService, Mockito.times(1)).getUserById(userId);
+        Mockito.verify(repository, Mockito.times(1)).save(item);
         Mockito.verifyNoMoreInteractions(userService, repository);
     }
 
     @Test
     void createItemWithoutUser() {
         Mockito.when(userService.getUserById(wrongUserId)).thenReturn(null);
-        assertThrows(
-                OwnerNotFoundException.class,
-                () -> itemService.create(item, wrongUserId));
-        Mockito.verify(userService, Mockito.times(1))
-                .getUserById(wrongUserId);
+        assertThrows(OwnerNotFoundException.class, () -> itemService.create(item, wrongUserId));
+        Mockito.verify(userService, Mockito.times(1)).getUserById(wrongUserId);
         Mockito.verifyNoMoreInteractions(userService);
     }
 
@@ -107,23 +86,17 @@ public class ItemServiceImplTest {
         item.setName("Игорь");
         Item newItem = itemService.update(item, userId);
         assertThat(newItem.equals(item)).isTrue();
-        Mockito.verify(userService, Mockito.times(1))
-                .getUserById(userId);
-        Mockito.verify(repository, Mockito.times(1))
-                .save(item);
-        Mockito.verify(repository, Mockito.times(2))
-                .findById(id);
+        Mockito.verify(userService, Mockito.times(1)).getUserById(userId);
+        Mockito.verify(repository, Mockito.times(1)).save(item);
+        Mockito.verify(repository, Mockito.times(2)).findById(id);
         Mockito.verifyNoMoreInteractions(userService, repository);
     }
 
     @Test
     void updateItemWithUnknownUserTest() {
         Mockito.when(userService.getUserById(wrongUserId)).thenReturn(null);
-        assertThrows(
-                OwnerNotFoundException.class,
-                () -> itemService.update(item, wrongUserId));
-        Mockito.verify(userService, Mockito.times(1))
-                .getUserById(wrongUserId);
+        assertThrows(OwnerNotFoundException.class, () -> itemService.update(item, wrongUserId));
+        Mockito.verify(userService, Mockito.times(1)).getUserById(wrongUserId);
         Mockito.verifyNoMoreInteractions(userService);
     }
 
@@ -132,13 +105,9 @@ public class ItemServiceImplTest {
         Mockito.when(userService.getUserById(userId)).thenReturn(user);
         Mockito.when(repository.findById(wrongId)).thenReturn(Optional.empty());
         item.setId(wrongId);
-        assertThrows(
-                ShareItNotFoundException.class,
-                () -> itemService.update(item, userId));
-        Mockito.verify(userService, Mockito.times(1))
-                .getUserById(userId);
-        Mockito.verify(repository, Mockito.times(1))
-                .findById(wrongId);
+        assertThrows(ShareItNotFoundException.class, () -> itemService.update(item, userId));
+        Mockito.verify(userService, Mockito.times(1)).getUserById(userId);
+        Mockito.verify(repository, Mockito.times(1)).findById(wrongId);
         Mockito.verifyNoMoreInteractions(userService, repository);
     }
 
@@ -150,8 +119,7 @@ public class ItemServiceImplTest {
         Mockito.when(repository.findByOwnerId(userId, PageRequest.of(from, size))).thenReturn(itemPage);
         List<Item> newItemList = itemService.getMyItems(userId, size, from);
         assertThat(newItemList.equals(itemList)).isTrue();
-        Mockito.verify(repository, Mockito.times(1))
-                .findByOwnerId(userId, PageRequest.of(from, size));
+        Mockito.verify(repository, Mockito.times(1)).findByOwnerId(userId, PageRequest.of(from, size));
         Mockito.verifyNoMoreInteractions(userService, repository);
     }
 
@@ -160,19 +128,15 @@ public class ItemServiceImplTest {
         Mockito.when(repository.findById(id)).thenReturn(Optional.ofNullable(item));
         Item newItem = itemService.getItemById(id);
         assertThat(newItem.equals(item)).isTrue();
-        Mockito.verify(repository, Mockito.times(2))
-                .findById(id);
+        Mockito.verify(repository, Mockito.times(2)).findById(id);
         Mockito.verifyNoMoreInteractions(userService, repository);
     }
 
     @Test
     void getUnknownItemByIdTest() {
         Mockito.when(repository.findById(wrongId)).thenReturn(Optional.empty());
-        assertThrows(
-                OwnerNotFoundException.class,
-                () -> itemService.getItemById(wrongId));
-        Mockito.verify(repository, Mockito.times(1))
-                .findById(wrongId);
+        assertThrows(OwnerNotFoundException.class, () -> itemService.getItemById(wrongId));
+        Mockito.verify(repository, Mockito.times(1)).findById(wrongId);
         Mockito.verifyNoMoreInteractions(repository);
     }
 
@@ -184,8 +148,7 @@ public class ItemServiceImplTest {
         Mockito.when(repository.search(text, PageRequest.of(from, size))).thenReturn(itemPage);
         List<Item> newItemList = itemService.searchItems(text, size, from);
         assertThat(newItemList.equals(itemList)).isTrue();
-        Mockito.verify(repository, Mockito.times(1))
-                .search(text, PageRequest.of(from, size));
+        Mockito.verify(repository, Mockito.times(1)).search(text, PageRequest.of(from, size));
         Mockito.verifyNoMoreInteractions(repository);
     }
 
@@ -196,8 +159,7 @@ public class ItemServiceImplTest {
         Mockito.when(commentRepository.findAllByItemId(id)).thenReturn(comments);
         List<Comment> newCommentList = itemService.getComments(id);
         assertThat(newCommentList.equals(comments)).isTrue();
-        Mockito.verify(commentRepository, Mockito.times(1))
-                .findAllByItemId(id);
+        Mockito.verify(commentRepository, Mockito.times(1)).findAllByItemId(id);
         Mockito.verifyNoMoreInteractions(commentRepository);
     }
 
@@ -206,8 +168,7 @@ public class ItemServiceImplTest {
         Mockito.when(userService.getUserById(userId)).thenReturn(user);
         String name = user.getName();
         assertThat(name.equals(itemService.getUserName(userId))).isTrue();
-        Mockito.verify(userService, Mockito.times(1))
-                .getUserById(userId);
+        Mockito.verify(userService, Mockito.times(1)).getUserById(userId);
         Mockito.verifyNoMoreInteractions(userService);
     }
 
@@ -218,8 +179,7 @@ public class ItemServiceImplTest {
         Mockito.when(repository.findItemsByRequestId(1)).thenReturn(itemList);
         List<Item> newItemList = itemService.getItemsByRequest(1);
         assertThat(itemList.equals(newItemList)).isTrue();
-        Mockito.verify(repository, Mockito.times(1))
-                .findItemsByRequestId(1);
+        Mockito.verify(repository, Mockito.times(1)).findItemsByRequestId(1);
         Mockito.verifyNoMoreInteractions(repository);
     }
 }

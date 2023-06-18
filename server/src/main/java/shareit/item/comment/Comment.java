@@ -11,12 +11,11 @@ import java.time.LocalDateTime;
 @Table(name = "comments")
 @Builder
 public class Comment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
-    @Column(name = "text", length=512, nullable=false)
+    @Column(name = "text", length = 512, nullable = false)
     private String text;
     @Column(name = "item_id")
     private Integer itemId;
