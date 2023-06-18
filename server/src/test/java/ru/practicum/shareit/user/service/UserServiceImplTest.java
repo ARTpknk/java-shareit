@@ -7,10 +7,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
-import ru.practicum.shareit.exceptions.model.ShareItNotFoundException;
-import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.repository.UserRepository;
+import shareit.exceptions.model.OwnerNotFoundException;
+import shareit.exceptions.model.ShareItNotFoundException;
+import shareit.user.model.User;
+import shareit.user.repository.UserRepository;
+import shareit.user.service.UserServiceImpl;
 
 import java.util.Collections;
 import java.util.List;

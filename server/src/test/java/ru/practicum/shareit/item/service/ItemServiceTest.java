@@ -5,11 +5,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.request.model.Request;
-import ru.practicum.shareit.request.service.RequestService;
-import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.service.UserService;
+import shareit.item.model.Item;
+import shareit.item.service.ItemService;
+import shareit.request.model.Request;
+import shareit.request.service.RequestService;
+import shareit.user.model.User;
+import shareit.user.service.UserService;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;

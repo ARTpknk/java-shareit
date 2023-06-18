@@ -7,11 +7,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.practicum.shareit.exceptions.model.OwnerNotFoundException;
-import ru.practicum.shareit.request.model.Request;
-import ru.practicum.shareit.request.repository.RequestRepository;
-import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.service.UserServiceImpl;
+import shareit.exceptions.model.OwnerNotFoundException;
+import shareit.request.model.Request;
+import shareit.request.repository.RequestRepository;
+import shareit.request.service.RequestServiceImpl;
+import shareit.user.model.User;
+import shareit.user.service.UserServiceImpl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

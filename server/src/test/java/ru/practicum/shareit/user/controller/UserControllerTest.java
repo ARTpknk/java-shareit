@@ -14,9 +14,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.service.UserService;
+import shareit.user.controller.UserController;
+import shareit.user.dto.UserDto;
+import shareit.user.model.User;
+import shareit.user.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;

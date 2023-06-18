@@ -14,10 +14,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import ru.practicum.shareit.request.dto.RequestDto;
-import ru.practicum.shareit.request.model.Request;
-import ru.practicum.shareit.request.service.RequestService;
-import ru.practicum.shareit.user.service.UserService;
+import shareit.request.controller.RequestController;
+import shareit.request.dto.RequestDto;
+import shareit.request.model.Request;
+import shareit.request.service.RequestService;
+import shareit.user.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
