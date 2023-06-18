@@ -61,7 +61,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void Test() {
+    void test() {
         userService.create(user);
         Request newRequest = service.create(request1, userId);
         assertThat(newRequest, equalTo(request1));

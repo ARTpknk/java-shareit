@@ -86,7 +86,7 @@ public class ItemServiceTest {
     }
 
     @Test
-    void Test() {
+    void test() {
         int from = 0;
         int size = 20;
 

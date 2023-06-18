@@ -12,14 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.practicum.shareit.booking.dto.BookingDto;
-import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.booking.model.BookingStatus;
-import ru.practicum.shareit.booking.model.State;
-import ru.practicum.shareit.booking.service.BookingService;
-import ru.practicum.shareit.item.controller.ItemController;
-import ru.practicum.shareit.item.service.ItemService;
-import ru.practicum.shareit.user.service.UserService;
+import shareit.booking.dto.BookingDto;
+import shareit.booking.model.Booking;
+import shareit.booking.model.BookingStatus;
+import shareit.booking.model.State;
+import shareit.booking.service.BookingService;
+import shareit.item.controller.ItemController;
+import shareit.item.service.ItemService;
+import shareit.user.service.UserService;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -209,6 +209,4 @@ public class BookingControllerTest {
                 .andExpect(jsonPath("$[1].id").value(bookingDto2.getId()))
                 .andExpect(jsonPath("$", hasSize(2)));
     }
-
-
 }

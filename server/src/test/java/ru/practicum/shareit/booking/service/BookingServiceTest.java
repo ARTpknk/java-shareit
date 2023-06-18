@@ -5,15 +5,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.booking.model.BookingStatus;
-import ru.practicum.shareit.booking.model.State;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.service.ItemService;
-import ru.practicum.shareit.request.model.Request;
-import ru.practicum.shareit.request.service.RequestService;
-import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.service.UserService;
+import shareit.booking.model.Booking;
+import shareit.booking.model.BookingStatus;
+import shareit.booking.model.State;
+import shareit.booking.service.BookingService;
+import shareit.item.model.Item;
+import shareit.item.service.ItemService;
+import shareit.request.model.Request;
+import shareit.request.service.RequestService;
+import shareit.user.model.User;
+import shareit.user.service.UserService;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -127,7 +128,7 @@ public class BookingServiceTest {
     }
 
     @Test
-    void Test() {
+    void test() {
         int from = 0;
         int size = 20;
 

@@ -45,7 +45,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void Test() {
+    void test() {
         User newUser = service.create(user1);
         assertThat(newUser, equalTo(user1));
 
