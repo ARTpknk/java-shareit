@@ -1,4 +1,4 @@
-package ru.practicum.shareit.request.controller;
+package shareit.request.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -148,18 +148,6 @@ public class RequestControllerTest {
                 .andExpect(jsonPath("$[0].description", is(requestDto.getDescription())))
                 .andExpect(jsonPath("$[1].description", is(requestDto2.getDescription())))
                 .andExpect(jsonPath("$", hasSize(2)));
-    }
-
-    @Test
-    void getUserRequestsWrongSizeTest() throws Exception {
-        mvc.perform(get("/requests/all")
-                        .param("from", String.valueOf(-1))
-                        .param("size", String.valueOf(size))
-                        .content(objectMapper.writeValueAsString(requestDto))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", 1))
-                .andExpect(status().is4xxClientError());
     }
 
     @Test

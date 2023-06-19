@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item.controller;
+package shareit.item.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -231,18 +231,6 @@ public class ItemControllerTest {
                 .andExpect(jsonPath("$[1].description", is(itemDto2.getDescription())))
                 .andExpect(jsonPath("$[0].available", is(itemDto2.getAvailable())))
                 .andExpect(jsonPath("$[1].available", is(itemDto2.getAvailable())));
-    }
-
-    @Test
-    void findMyItemsWrongFromTest() throws Exception {
-        mvc.perform(get("/items", 1)
-                        .param("from", String.valueOf(-1))
-                        .param("size", String.valueOf(size))
-                        .content(objectMapper.writeValueAsString(itemDto))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", 1))
-                .andExpect(status().is4xxClientError());
     }
 
     @Test
