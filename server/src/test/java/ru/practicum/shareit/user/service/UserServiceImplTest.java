@@ -11,7 +11,6 @@ import shareit.exceptions.model.OwnerNotFoundException;
 import shareit.exceptions.model.ShareItNotFoundException;
 import shareit.user.model.User;
 import shareit.user.repository.UserRepository;
-import shareit.user.service.UserServiceImpl;
 
 import java.util.Collections;
 import java.util.List;

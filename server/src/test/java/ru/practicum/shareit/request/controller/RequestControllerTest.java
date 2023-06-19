@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import shareit.request.controller.RequestController;
 import shareit.request.dto.RequestDto;
 import shareit.request.model.Request;
 import shareit.request.service.RequestService;

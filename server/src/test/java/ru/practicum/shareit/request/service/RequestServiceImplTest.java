@@ -10,7 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import shareit.exceptions.model.OwnerNotFoundException;
 import shareit.request.model.Request;
 import shareit.request.repository.RequestRepository;
-import shareit.request.service.RequestServiceImpl;
 import shareit.user.model.User;
 import shareit.user.service.UserServiceImpl;
 

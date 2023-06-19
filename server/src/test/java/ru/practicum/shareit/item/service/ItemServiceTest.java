@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import shareit.item.model.Item;
-import shareit.item.service.ItemService;
 import shareit.request.model.Request;
 import shareit.request.service.RequestService;
 import shareit.user.model.User;

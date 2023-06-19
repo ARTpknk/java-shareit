@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.PageRequest;
 import shareit.item.model.Item;
-import shareit.item.repository.ItemRepository;
 import shareit.request.model.Request;
 import shareit.request.repository.RequestRepository;
 import shareit.user.model.User;

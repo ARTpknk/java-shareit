@@ -16,7 +16,6 @@ import shareit.item.comment.Comment;
 import shareit.item.comment.CommentRepository;
 import shareit.item.model.Item;
 import shareit.item.repository.ItemRepository;
-import shareit.item.service.ItemServiceImpl;
 import shareit.user.model.User;
 import shareit.user.service.UserServiceImpl;
 

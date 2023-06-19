@@ -7,7 +7,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import shareit.request.model.Request;
-import shareit.request.repository.RequestRepository;
 import shareit.user.model.User;
 import shareit.user.repository.UserRepository;
 
