@@ -27,13 +27,6 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(int id, String text, Integer itemId, Integer authorId) {
-        this.id = id;
-        this.text = text;
-        this.itemId = itemId;
-        this.authorId = authorId;
-    }
-
     public Comment(int id, String text, Integer itemId, Integer authorId, LocalDateTime created) {
         this.id = id;
         this.text = text;

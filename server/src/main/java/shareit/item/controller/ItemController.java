@@ -6,6 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import shareit.classes.Create;
 import shareit.classes.Update;
+import shareit.exceptions.model.ShareItBadRequest;
 import shareit.item.comment.Comment;
 import shareit.item.comment.CommentDto;
 import shareit.item.comment.CommentMapper;
@@ -66,6 +67,9 @@ public class ItemController {
     public List<ItemWithBookingsDto> findMyItems(@RequestHeader("X-Sharer-User-Id") int ownerId,
                                                  @RequestParam(required = false, defaultValue = "0") int from,
                                                  @RequestParam(required = false, defaultValue = "20") int size) {
+        if (from < 0 || size < 1) {
+            throw new ShareItBadRequest("некорректные значения");
+        }
         return itemService.getMyItems(ownerId, size, from).stream()
                 .map((Item item) -> ItemMapper.toItemWithBookingsDto(item, itemService.getLastBooking(item.getId(), ownerId),
                         itemService.getNextBooking(item.getId(), ownerId), itemService.getComments(item.getId())
@@ -77,6 +81,9 @@ public class ItemController {
     public List<ItemDto> searchItems(@RequestParam String text,
                                      @RequestParam(required = false, defaultValue = "0") int from,
                                      @RequestParam(required = false, defaultValue = "20") int size) {
+        if (from < 0 || size < 1) {
+            throw new ShareItBadRequest("некорректные значения");
+        }
         if (text.isBlank()) {
             return Collections.emptyList();
         }

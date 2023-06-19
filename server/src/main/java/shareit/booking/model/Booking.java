@@ -36,16 +36,6 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(int id, LocalDateTime start, LocalDateTime end, Integer itemId, Integer bookerId,
-                   BookingStatus status) {
-        this.id = id;
-        this.start = start;
-        this.end = end;
-        this.itemId = itemId;
-        this.bookerId = bookerId;
-        this.status = status;
-    }
-
     public Booking(int id, LocalDateTime start, LocalDateTime end, Integer itemId, Item item,
                    Integer bookerId, User booker, BookingStatus status) {
         this.id = id;

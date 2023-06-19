@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import shareit.exceptions.model.OwnerNotFoundException;
+import shareit.exceptions.model.ShareItBadRequest;
 import shareit.exceptions.model.ShareItNotFoundException;
 import shareit.item.comment.Comment;
 import shareit.item.comment.CommentRepository;
@@ -180,5 +181,11 @@ public class ItemServiceImplTest {
         assertThat(itemList.equals(newItemList)).isTrue();
         Mockito.verify(repository, Mockito.times(1)).findItemsByRequestId(1);
         Mockito.verifyNoMoreInteractions(repository);
+    }
+
+    @Test
+    void createCommentBlankTextTest() {
+        comment.setText(" ");
+        assertThrows(ShareItBadRequest.class, () -> itemService.createComment(comment));
     }
 }

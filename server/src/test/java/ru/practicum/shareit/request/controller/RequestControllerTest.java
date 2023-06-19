@@ -150,6 +150,18 @@ public class RequestControllerTest {
     }
 
     @Test
+    void getUserRequestsWrongSizeTest() throws Exception {
+        mvc.perform(get("/requests/all")
+                        .param("from", String.valueOf(-1))
+                        .param("size", String.valueOf(size))
+                        .content(objectMapper.writeValueAsString(requestDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header("X-Sharer-User-Id", 1))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
     void getRequest() throws Exception {
         when(requestService.getRequest(1, 1))
                 .thenReturn(request);

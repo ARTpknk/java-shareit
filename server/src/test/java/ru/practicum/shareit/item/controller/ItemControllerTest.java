@@ -233,6 +233,18 @@ public class ItemControllerTest {
     }
 
     @Test
+    void findMyItemsWrongFromTest() throws Exception {
+        mvc.perform(get("/items", 1)
+                        .param("from", String.valueOf(-1))
+                        .param("size", String.valueOf(size))
+                        .content(objectMapper.writeValueAsString(itemDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header("X-Sharer-User-Id", 1))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
     void searchItemsWrongFromTest() throws Exception {
         mvc.perform(get("/items/search", 1)
                         .param("from", String.valueOf(-1))

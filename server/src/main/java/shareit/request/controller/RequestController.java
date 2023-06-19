@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import shareit.classes.Create;
+import shareit.exceptions.model.ShareItBadRequest;
 import shareit.item.dto.ItemDto;
 import shareit.item.dto.ItemMapper;
 import shareit.item.model.Item;
@@ -51,6 +52,9 @@ public class RequestController {
     public List<RequestDto> getRequests(@RequestHeader("X-Sharer-User-Id") int userId,
                                         @RequestParam(required = false, defaultValue = "0") int from,
                                         @RequestParam(required = false, defaultValue = "20") int size) {
+        if (from < 0 || size < 1) {
+            throw new ShareItBadRequest("некорректные значения");
+        }
 
         return requestService.getByUserIdAndRequestId(userId, from, size).stream()
                 .map((Request request) -> (RequestMapper.toRequestDto(request,
