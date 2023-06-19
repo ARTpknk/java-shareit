@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import shareit.booking.model.Booking;
 import shareit.booking.model.BookingStatus;
 import shareit.booking.model.State;
-import shareit.booking.service.BookingService;
 import shareit.item.model.Item;
 import shareit.item.service.ItemService;
 import shareit.request.model.Request;

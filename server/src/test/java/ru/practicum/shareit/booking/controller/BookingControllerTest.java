@@ -164,6 +164,32 @@ public class BookingControllerTest {
                 .andExpect(jsonPath("$", hasSize(2)));
     }
 
+    @Test
+    void getMyBookingsWrongFromTest() throws Exception {
+
+
+        mvc.perform(get("/bookings", 1)
+                        .content(objectMapper.writeValueAsString(bookingDto))
+                        .param("from", String.valueOf(-1))
+                        .param("size", String.valueOf(size))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header("X-Sharer-User-Id", 1))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void getOwnerBookingsWrongFromTest() throws Exception {
+        mvc.perform(get("/bookings/owner", 1)
+                        .content(objectMapper.writeValueAsString(bookingDto))
+                        .param("from", String.valueOf(-1))
+                        .param("size", String.valueOf(size))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header("X-Sharer-User-Id", 1))
+                .andExpect(status().is4xxClientError());
+    }
+
 
     @Test
     void getOwnerBookingsTest() throws Exception {

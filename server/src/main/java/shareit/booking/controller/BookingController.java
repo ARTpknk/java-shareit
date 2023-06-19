@@ -15,6 +15,7 @@ import shareit.booking.model.State;
 import shareit.booking.service.BookingService;
 import shareit.classes.Create;
 import shareit.classes.Update;
+import shareit.exceptions.model.ShareItBadRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -57,6 +58,9 @@ public class BookingController {
                                           @RequestParam(required = false, defaultValue = "ALL") State state,
                                           @RequestParam(required = false, defaultValue = "0") int from,
                                           @RequestParam(required = false, defaultValue = "20") int size) {
+        if (from < 0 || size < 1) {
+            throw new ShareItBadRequest("некорректные значения");
+        }
 
         return bookingService.getMyBookings(userId, state, from, size)
                 .stream().map(BookingMapper::toBookingDto)
@@ -69,6 +73,10 @@ public class BookingController {
                                              @RequestParam(required = false, defaultValue = "ALL") State state,
                                              @RequestParam(required = false, defaultValue = "0") int from,
                                              @RequestParam(required = false, defaultValue = "20") int size) {
+        if (from < 0 || size < 1) {
+            throw new ShareItBadRequest("некорректные значения");
+        }
+
         return bookingService.getOwnerBookings(ownerId, state, from, size)
                 .stream().map(BookingMapper::toBookingDto)
                 .collect(Collectors.toList());

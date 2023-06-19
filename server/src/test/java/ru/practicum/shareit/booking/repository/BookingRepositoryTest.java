@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import shareit.booking.model.Booking;
 import shareit.booking.model.BookingStatus;
-import shareit.booking.repository.BookingRepository;
 import shareit.item.model.Item;
 import shareit.item.repository.ItemRepository;
 import shareit.request.model.Request;

@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import shareit.item.comment.Comment;
 import shareit.item.comment.CommentDto;
-import shareit.item.controller.ItemController;
 import shareit.item.dto.ItemDto;
 import shareit.item.model.Item;
 import shareit.item.service.ItemService;
