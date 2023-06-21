@@ -65,7 +65,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> getMyItems(int ownerId, int size, int from) {
-        return repository.findByOwnerId(ownerId, PageRequest.of(from, size)).toList();
+        return repository.findByOwnerIdOrderById(ownerId, PageRequest.of(from, size)).toList();
     }
 
     @Override
