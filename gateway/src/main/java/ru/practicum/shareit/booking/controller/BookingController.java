@@ -52,7 +52,7 @@ public class BookingController {
 
 
         if (from < 0 || size < 1) {
-            throw new shareit.exceptions.model.ShareItBadRequest("некорректные значения");
+            throw new ShareItBadRequest("некорректные значения");
         }
         return bookingClient.getBookings(userId, state, from, size);
     }
