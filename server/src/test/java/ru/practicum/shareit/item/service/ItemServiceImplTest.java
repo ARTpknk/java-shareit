@@ -116,10 +116,10 @@ public class ItemServiceImplTest {
         List<Item> itemList = new ArrayList<>();
         itemList.add(item);
         Page<Item> itemPage = new PageImpl<>(itemList);
-        Mockito.when(repository.findByOwnerId(userId, PageRequest.of(from, size))).thenReturn(itemPage);
+        Mockito.when(repository.findByOwnerIdOrderById(userId, PageRequest.of(from, size))).thenReturn(itemPage);
         List<Item> newItemList = itemService.getMyItems(userId, size, from);
         assertThat(newItemList.equals(itemList)).isTrue();
-        Mockito.verify(repository, Mockito.times(1)).findByOwnerId(userId, PageRequest.of(from, size));
+        Mockito.verify(repository, Mockito.times(1)).findByOwnerIdOrderById(userId, PageRequest.of(from, size));
         Mockito.verifyNoMoreInteractions(userService, repository);
     }
 
