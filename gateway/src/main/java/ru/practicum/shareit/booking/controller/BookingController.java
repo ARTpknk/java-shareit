@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.client.BookingClient;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.model.State;
+import ru.practicum.shareit.classes.Update;
 import ru.practicum.shareit.exceptions.model.ShareItBadRequest;
-import shareit.classes.Update;
 
 import java.util.Map;
 

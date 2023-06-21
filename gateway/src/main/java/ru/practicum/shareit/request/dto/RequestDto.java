@@ -2,7 +2,6 @@ package ru.practicum.shareit.request.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.With;
 import ru.practicum.shareit.classes.Create;
 import ru.practicum.shareit.item.dto.ItemDto;
 
@@ -16,7 +15,6 @@ import java.util.List;
 @Data
 @Builder
 public class RequestDto {
-    @With
     private int id;
     @NotBlank(groups = Create.class)
     private String description;

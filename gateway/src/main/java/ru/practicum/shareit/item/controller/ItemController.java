@@ -12,7 +12,6 @@ import ru.practicum.shareit.item.client.ItemClient;
 import ru.practicum.shareit.item.comment.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 
-
 @Slf4j
 @RestController
 @RequestMapping("/items")

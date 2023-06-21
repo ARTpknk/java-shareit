@@ -8,8 +8,8 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.shareit.client.BaseClient;
+import ru.practicum.shareit.exceptions.model.ShareItBadRequest;
 import ru.practicum.shareit.user.dto.UserDto;
-import shareit.exceptions.model.ShareItBadRequest;
 
 @Service
 public class UserClient extends BaseClient {
@@ -34,7 +34,6 @@ public class UserClient extends BaseClient {
         if (userDto.getEmail() == null) {
             throw new ShareItBadRequest("empty email");
         }
-
         return post("", userDto);
     }
 
