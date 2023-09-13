@@ -19,6 +19,7 @@ __Server__ - основное приложение
 Сервис использует базу данных PostgreSql
 ###
 Схема базы данных <br>
-![Untitled (6)](https://user-images.githubusercontent.com/108333044/212437828-44934522-5034-4e55-9409-2fd98950f141.png)
+![Untitled (6)](https://github.com/ARTpknk/java-shareit/assets/108333044/464a5789-ea37-458c-b131-8a52d53bebc9)
+
 ###
 используется кодировка UTF-8
