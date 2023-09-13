@@ -120,7 +120,6 @@ public class ItemControllerTest {
                 .build();
     }
 
-
     @Test
     void createTest() throws Exception {
         when(itemService.create(any(), anyInt()))
@@ -173,7 +172,6 @@ public class ItemControllerTest {
                 .andExpect(jsonPath("$.description").value(itemDto.getDescription()))
                 .andExpect(jsonPath("$.available").value(itemDto.getAvailable()));
     }
-
 
     @Test
     void findItemByTest() throws Exception {
@@ -308,6 +306,4 @@ public class ItemControllerTest {
                 .andExpect(jsonPath("$.id", is(commentDto.getId()), Integer.class))
                 .andExpect(jsonPath("$.text").value(commentDto.getText()));
     }
-
-
 }

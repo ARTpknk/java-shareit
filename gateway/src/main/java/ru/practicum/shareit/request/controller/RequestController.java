@@ -48,5 +48,4 @@ public class RequestController {
 
         return requestClient.getRequest(userId, id);
     }
-
 }
