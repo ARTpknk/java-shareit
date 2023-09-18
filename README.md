@@ -10,11 +10,71 @@ __Gateway__ - для работы с запросами пользователе
 __Server__ - основное приложение
 ##### Для взаимодействия с сервисом созданы следующие эндпоинты:
 
+__* Создать пользователя__ : POST http://localhost:8080/users
+{
+"name": "user",
+"email": "user@user.com"
+} <br>
+__* Обновить пользователя__ : PATCH http://localhost:8080/users/{userId}
+{
+"name": "update",
+"email": "update@user.com"
+} <br>
+__* Получить пользователя__ : GET http://localhost:8080/users/{userId} <br>
+__* Получить всех пользователей__ : GET http://localhost:8080/users <br>
+__* Удалить пользователя__ : DELETE http://localhost:8080/users/{userId} <br>
 
+__* Создать вещь__ : POST http://localhost:8080/items
+{
+"name": "Дрель",
+"description": "Простая дрель",
+"available": true
+} ,
+Headers: X-Sharer-User-Id - 1 <br>
+__* Обновить вещь__ : PATCH http://localhost:8080/items/{itemId}
+{
+"id": 1,
+"name": "Дрель+",
+"description": "Аккумуляторная дрель",
+"available": false
+} ,
+Headers: X-Sharer-User-Id - 1 <br>
+__* Получить вещь__ : GET http://localhost:8080/items/{itemId} <br>
+__* Получить все вещи__ : GET http://localhost:8080/items <br>
+__* Поиск вещей по названию__ : GET http://localhost:8080/items/search?text=дрель <br>
+__* Опубликовать комментарий к вещи__ : POST http://localhost:8080/items/{itemId}/comment
+{
+"text": "Comment for item 1"
+} ,
+Headers: X-Sharer-User-Id - 1 <br>
 
+__* Создать бронирование вещи__ : POST http://localhost:8080/bookings
+{
+"itemId": 2,
+"start": "2024-10-10T12:00:00",
+"end": "2024-11-10T12:00:00"
+} ,
+Headers: X-Sharer-User-Id - 1 <br>
+__* Одобрить или отклонить бронирование__ : PATCH http://localhost:8080/bookings/{bookingId}?approved=true
+Headers: X-Sharer-User-Id - 2 <br>
+__* Получить своё бронирование__ : GET http://localhost:8080/bookings/{bookingId}
+Headers: X-Sharer-User-Id - 1 <br>
+__* Получить свои бронирования__ : GET http://localhost:8080/bookings
+Headers: X-Sharer-User-Id - 1 <br>
+__* Получить бронирования своих вещей__ : GET http://localhost:8080/bookings/owner
+Headers: X-Sharer-User-Id - 2 <br>
 
-
-
+__* Создать запрос на вещь__ : POST http://localhost:8080/requests
+{
+"description": "Дрель"
+} ,
+Headers: X-Sharer-User-Id - 1 <br>
+__* Получить свои запросы__ : GET http://localhost:8080/requests
+Headers: X-Sharer-User-Id - 1 <br>
+__* Получить все запросы, кроме своих__ : GET http://localhost:8080/requests/all
+Headers: X-Sharer-User-Id - 2 <br>
+__* Получить запрос__ : GET http://localhost:8080/requests/{requestId}
+Headers: X-Sharer-User-Id - 2 <br>
 
 Сервис использует базу данных PostgreSql
 ###
