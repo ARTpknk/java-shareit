@@ -20,12 +20,14 @@ public class ItemController {
     private final ItemClient itemClient;
 
     @PostMapping
-    public ResponseEntity<Object> create(@Validated(Create.class) @RequestBody ItemDto itemDto, @RequestHeader("X-Sharer-User-Id") int ownerId) {
+    public ResponseEntity<Object> create(@Validated(Create.class) @RequestBody ItemDto itemDto,
+                                         @RequestHeader("X-Sharer-User-Id") int ownerId) {
         return itemClient.create(itemDto, ownerId);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> update(@Validated(Update.class) @PathVariable("id") Integer id, @RequestBody ItemDto itemDto,
+    public ResponseEntity<Object> update(@Validated(Update.class) @PathVariable("id") Integer id,
+                                         @RequestBody ItemDto itemDto,
                                          @RequestHeader("X-Sharer-User-Id") int ownerId) {
 
         return itemClient.update(id, itemDto, ownerId);

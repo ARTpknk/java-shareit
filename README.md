@@ -41,7 +41,15 @@ __* Обновить вещь__ : PATCH http://localhost:8080/items/{itemId}
 Headers: X-Sharer-User-Id - 1 <br>
 __* Получить вещь__ : GET http://localhost:8080/items/{itemId} <br>
 __* Получить все вещи__ : GET http://localhost:8080/items <br>
+RequestParams:
+* int __from__ (С какого номера по порядку начать поиск), default value = 0
+* int __size__ (Какой размер список нужно получить), default value = 20
+
 __* Поиск вещей по названию__ : GET http://localhost:8080/items/search?text=дрель <br>
+RequestParams:
+* int __from__ (С какого номера по порядку начать поиск), default value = 0
+* int __size__ (Какой размер список нужно получить), default value = 20
+
 __* Опубликовать комментарий к вещи__ : POST http://localhost:8080/items/{itemId}/comment
 {
 "text": "Comment for item 1"
@@ -57,12 +65,22 @@ __* Создать бронирование вещи__ : POST http://localhost:8
 Headers: X-Sharer-User-Id - 1 <br>
 __* Одобрить или отклонить бронирование__ : PATCH http://localhost:8080/bookings/{bookingId}?approved=true
 Headers: X-Sharer-User-Id - 2 <br>
+RequestParam: boolean approved, default true <br>
 __* Получить своё бронирование__ : GET http://localhost:8080/bookings/{bookingId}
 Headers: X-Sharer-User-Id - 1 <br>
 __* Получить свои бронирования__ : GET http://localhost:8080/bookings
 Headers: X-Sharer-User-Id - 1 <br>
+RequestParams:
+* int __from__ (С какого номера по порядку начать поиск), default value = 0
+* int __size__ (Какой размер список нужно получить), default value = 20
+* state (ALL, CURRENT, PAST, FUTURE, WAITING, REJECTED) (Фильтр бронирований), not required <br>
+
 __* Получить бронирования своих вещей__ : GET http://localhost:8080/bookings/owner
 Headers: X-Sharer-User-Id - 2 <br>
+RequestParams:
+* int __from__ (С какого номера по порядку начать поиск), default value = 0
+* int __size__ (Какой размер список нужно получить), default value = 20
+* state (ALL, CURRENT, PAST, FUTURE, WAITING, REJECTED) (Фильтр бронирований), not required <br>
 
 __* Создать запрос на вещь__ : POST http://localhost:8080/requests
 {
@@ -72,7 +90,11 @@ Headers: X-Sharer-User-Id - 1 <br>
 __* Получить свои запросы__ : GET http://localhost:8080/requests
 Headers: X-Sharer-User-Id - 1 <br>
 __* Получить все запросы, кроме своих__ : GET http://localhost:8080/requests/all
-Headers: X-Sharer-User-Id - 2 <br>
+Headers: X-Sharer-User-Id - 2
+RequestParams:
+* int __from__ (С какого номера по порядку начать поиск), default value = 0
+* int __size__ (Какой размер список нужно получить), default value = 20
+
 __* Получить запрос__ : GET http://localhost:8080/requests/{requestId}
 Headers: X-Sharer-User-Id - 2 <br>
 

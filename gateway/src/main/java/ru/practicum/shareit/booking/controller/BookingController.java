@@ -37,7 +37,6 @@ public class BookingController {
         return bookingClient.update(id, ownerId, approved);
     }
 
-
     @GetMapping("/{bookingId}")
     public ResponseEntity<Object> getMyBooking(@PathVariable("bookingId") Integer id,
                                                @RequestHeader("X-Sharer-User-Id") int userId) {
