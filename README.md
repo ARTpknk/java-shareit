@@ -10,92 +10,93 @@ __Gateway__ - для работы с запросами пользователе
 __Server__ - основное приложение
 ##### Для взаимодействия с сервисом созданы следующие эндпоинты:
 
-__* Создать пользователя__ : POST http://localhost:8080/users
+* __Создать пользователя__ : POST http://localhost:8080/users
 {
 "name": "user",
 "email": "user@user.com"
 } <br>
-__* Обновить пользователя__ : PATCH http://localhost:8080/users/{userId}
+* __Обновить пользователя__ : PATCH http://localhost:8080/users/{userId}
 {
 "name": "update",
 "email": "update@user.com"
 } <br>
-__* Получить пользователя__ : GET http://localhost:8080/users/{userId} <br>
-__* Получить всех пользователей__ : GET http://localhost:8080/users <br>
-__* Удалить пользователя__ : DELETE http://localhost:8080/users/{userId} <br>
+* __Получить пользователя__ : GET http://localhost:8080/users/{userId} <br>
+* __Получить всех пользователей__ : GET http://localhost:8080/users <br>
+* __Удалить пользователя__ : DELETE http://localhost:8080/users/{userId} <br>
 
-__* Создать вещь__ : POST http://localhost:8080/items
+* __Создать вещь__ : POST http://localhost:8080/items
 {
 "name": "Дрель",
 "description": "Простая дрель",
 "available": true
-} ,
+}  <br>
 Headers: X-Sharer-User-Id - 1 <br>
-__* Обновить вещь__ : PATCH http://localhost:8080/items/{itemId}
+* __Обновить вещь__ : PATCH http://localhost:8080/items/{itemId}
 {
 "id": 1,
 "name": "Дрель+",
 "description": "Аккумуляторная дрель",
 "available": false
-} ,
+} <br>
 Headers: X-Sharer-User-Id - 1 <br>
-__* Получить вещь__ : GET http://localhost:8080/items/{itemId} <br>
-__* Получить все вещи__ : GET http://localhost:8080/items <br>
+* __Получить вещь__ : GET http://localhost:8080/items/{itemId} <br>
+* __Получить все вещи__ : GET http://localhost:8080/items <br>
 RequestParams:
-* int __from__ (С какого номера по порядку начать поиск), default value = 0
-* int __size__ (Какой размер список нужно получить), default value = 20
+  * int __from__ (С какого номера по порядку начать поиск), default value = 0
+  * int __size__ (Какой размер список нужно получить), default value = 20
 
-__* Поиск вещей по названию__ : GET http://localhost:8080/items/search?text=дрель <br>
+* __Поиск вещей по названию__ : GET http://localhost:8080/items/search?text=дрель <br>
 RequestParams:
-* int __from__ (С какого номера по порядку начать поиск), default value = 0
-* int __size__ (Какой размер список нужно получить), default value = 20
+  * int __from__ (С какого номера по порядку начать поиск), default value = 0
+  * int __size__ (Какой размер список нужно получить), default value = 20
 
-__* Опубликовать комментарий к вещи__ : POST http://localhost:8080/items/{itemId}/comment
+* __Опубликовать комментарий к вещи__ : POST http://localhost:8080/items/{itemId}/comment
 {
 "text": "Comment for item 1"
-} ,
+} <br>
 Headers: X-Sharer-User-Id - 1 <br>
 
-__* Создать бронирование вещи__ : POST http://localhost:8080/bookings
+* __Создать бронирование вещи__ : POST http://localhost:8080/bookings
 {
 "itemId": 2,
 "start": "2024-10-10T12:00:00",
 "end": "2024-11-10T12:00:00"
-} ,
+} <br>
 Headers: X-Sharer-User-Id - 1 <br>
-__* Одобрить или отклонить бронирование__ : PATCH http://localhost:8080/bookings/{bookingId}?approved=true
+* __Одобрить или отклонить бронирование__ : PATCH http://localhost:8080/bookings/{bookingId}?approved=true <br>
 Headers: X-Sharer-User-Id - 2 <br>
-RequestParam: boolean approved, default true <br>
-__* Получить своё бронирование__ : GET http://localhost:8080/bookings/{bookingId}
+RequestParam: 
+  * boolean approved, default true <br>
+* __Получить своё бронирование__ : GET http://localhost:8080/bookings/{bookingId} <br>
 Headers: X-Sharer-User-Id - 1 <br>
-__* Получить свои бронирования__ : GET http://localhost:8080/bookings
+* __Получить свои бронирования__ : GET http://localhost:8080/bookings <br>
 Headers: X-Sharer-User-Id - 1 <br>
 RequestParams:
-* int __from__ (С какого номера по порядку начать поиск), default value = 0
-* int __size__ (Какой размер список нужно получить), default value = 20
-* state (ALL, CURRENT, PAST, FUTURE, WAITING, REJECTED) (Фильтр бронирований), not required <br>
+  * int __from__ (С какого номера по порядку начать поиск), default value = 0
+  * int __size__ (Какой размер список нужно получить), default value = 20
+  * state (ALL, CURRENT, PAST, FUTURE, WAITING, REJECTED) (Фильтр бронирований), not required <br>
 
-__* Получить бронирования своих вещей__ : GET http://localhost:8080/bookings/owner
+* __Получить бронирования своих вещей__ : GET http://localhost:8080/bookings/owner <br>
 Headers: X-Sharer-User-Id - 2 <br>
 RequestParams:
-* int __from__ (С какого номера по порядку начать поиск), default value = 0
-* int __size__ (Какой размер список нужно получить), default value = 20
-* state (ALL, CURRENT, PAST, FUTURE, WAITING, REJECTED) (Фильтр бронирований), not required <br>
+  * int __from__ (С какого номера по порядку начать поиск), default value = 0
+  * int __size__ (Какой размер список нужно получить), default value = 20
+  * state (ALL, CURRENT, PAST, FUTURE, WAITING, REJECTED) (Фильтр бронирований), not required <br>
 
-__* Создать запрос на вещь__ : POST http://localhost:8080/requests
+* __Создать запрос на вещь__ : POST http://localhost:8080/requests
 {
 "description": "Дрель"
-} ,
+} <br>
 Headers: X-Sharer-User-Id - 1 <br>
-__* Получить свои запросы__ : GET http://localhost:8080/requests
+* __Получить свои запросы__ : GET http://localhost:8080/requests <br>
 Headers: X-Sharer-User-Id - 1 <br>
-__* Получить все запросы, кроме своих__ : GET http://localhost:8080/requests/all
-Headers: X-Sharer-User-Id - 2
+* __Получить все запросы, кроме своих__ : GET http://localhost:8080/requests/all <br>
+Headers: X-Sharer-User-Id - 2 <br>
 RequestParams:
-* int __from__ (С какого номера по порядку начать поиск), default value = 0
-* int __size__ (Какой размер список нужно получить), default value = 20
+  * int __from__ (С какого номера по порядку начать поиск), default value = 0
+  * int __size__ (Какой размер список нужно получить), default value = 20
 
-__* Получить запрос__ : GET http://localhost:8080/requests/{requestId}
+* __Получить запрос__ : GET http://localhost:8080/requests/{requestId} <br>
 Headers: X-Sharer-User-Id - 2 <br>
 
 Сервис использует базу данных PostgreSql
