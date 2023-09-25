@@ -43,12 +43,12 @@ Headers: X-Sharer-User-Id - 1 <br>
 * __Получить все вещи__ : GET http://localhost:8080/items <br>
 RequestParams:
   * int __from__ (С какого номера по порядку начать поиск), default value = 0
-  * int __size__ (Какой размер список нужно получить), default value = 20
+  * int __size__ (Какого размера список нужно получить), default value = 20
 
 * __Поиск вещей по названию__ : GET http://localhost:8080/items/search?text=дрель <br>
 RequestParams:
   * int __from__ (С какого номера по порядку начать поиск), default value = 0
-  * int __size__ (Какой размер список нужно получить), default value = 20
+  * int __size__ (Какого размера список нужно получить), default value = 20
 
 * __Опубликовать комментарий к вещи__ : POST http://localhost:8080/items/{itemId}/comment
 {
@@ -73,14 +73,14 @@ Headers: X-Sharer-User-Id - 1 <br>
 Headers: X-Sharer-User-Id - 1 <br>
 RequestParams:
   * int __from__ (С какого номера по порядку начать поиск), default value = 0
-  * int __size__ (Какой размер список нужно получить), default value = 20
+  * int __size__ (Какого размера список нужно получить), default value = 20
   * state (ALL, CURRENT, PAST, FUTURE, WAITING, REJECTED) (Фильтр бронирований), not required <br>
 
 * __Получить бронирования своих вещей__ : GET http://localhost:8080/bookings/owner <br>
 Headers: X-Sharer-User-Id - 2 <br>
 RequestParams:
   * int __from__ (С какого номера по порядку начать поиск), default value = 0
-  * int __size__ (Какой размер список нужно получить), default value = 20
+  * int __size__ (Какого размера список нужно получить), default value = 20
   * state (ALL, CURRENT, PAST, FUTURE, WAITING, REJECTED) (Фильтр бронирований), not required <br>
 
 * __Создать запрос на вещь__ : POST http://localhost:8080/requests
@@ -94,7 +94,7 @@ Headers: X-Sharer-User-Id - 1 <br>
 Headers: X-Sharer-User-Id - 2 <br>
 RequestParams:
   * int __from__ (С какого номера по порядку начать поиск), default value = 0
-  * int __size__ (Какой размер список нужно получить), default value = 20
+  * int __size__ (Какого размера список нужно получить), default value = 20
 
 * __Получить запрос__ : GET http://localhost:8080/requests/{requestId} <br>
 Headers: X-Sharer-User-Id - 2 <br>
